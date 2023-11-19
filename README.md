@@ -34,21 +34,21 @@ pip install psycopg2
 ```
 CREATE DATABASE sportcomplex_database
 ```
-Создание пользователя, через которого будут проводиться манипуляции с базой данных:
+Создание пользователя (администратора), через которого будут проводиться манипуляции с базой данных:
 ```
 CREATE USER sportcomplex_admin WITH PASSWORD '12345678';
 ```
 Конфигурирование пользователя:
 ```
-ALTER ROLE sportclub_admin SET client_encoding TO 'utf8';
-ALTER ROLE sportclub_admin SET default_transaction_isolation TO 'read committed';
-ALTER ROLE sportclub_admin SET timezone TO 'UTC';
+ALTER ROLE sportcomplex_admin SET client_encoding TO 'utf8';
+ALTER ROLE sportcomplex_admin SET default_transaction_isolation TO 'read committed';
+ALTER ROLE sportcomplex_admin SET timezone TO 'UTC';
 ```
 Выдача прав на работу с ранее созданной базой данных:
 ```
-GRANT ALL PRIVILEGES ON DATABASE sportclub_database TO sportclub_admin;
+GRANT ALL PRIVILEGES ON DATABASE sportcomplex_database TO sportclub_admin;
 ```
-Теперь нужно произвести миграцию(?). Команды выполняются в директории проекта:
+Теперь нужно произвести миграцию(внесение изменений моделей в базу данных). Команды выполняются в директории проекта:
 ```
 python manage.py makemigrations
 python manage.py migrate
