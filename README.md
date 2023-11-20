@@ -46,7 +46,7 @@ ALTER ROLE sportcomplex_admin SET timezone TO 'UTC';
 ```
 Выдача прав на работу с ранее созданной базой данных:
 ```
-GRANT ALL PRIVILEGES ON DATABASE sportcomplex_database TO sportclub_admin;
+GRANT ALL PRIVILEGES ON DATABASE sportcomplex_database TO sportcomplex_admin;
 ```
 Теперь нужно произвести миграцию(внесение изменений моделей в базу данных). Команды выполняются в директории проекта:
 ```
