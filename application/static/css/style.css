@@ -1,0 +1,59 @@
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+  color: rgb(40, 35, 60)
+}
+
+a:hover {
+  text-decoration-line: underline;
+  text-decoration-style:dotted;
+  text-decoration-thickness: 3px;
+  text-decoration-skip-ink: none;
+  color: rgb(180, 91, 142);
+}
+
+
+.glitch-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, rgb(255, 208, 0), rgb(0, 0, 0), rgb(255, 208, 0));
+  background-size: 100% 100%;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.glitch-button:hover {
+  background-position: 100% 0;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translateX(-1px);
+  }
+  20% {
+    transform: translateX(2px);
+  }
+  40% {
+    transform: translateX(-3px);
+  }
+  60% {
+    transform: translateX(2px);
+  }
+  80% {
+    transform: translateX(-1px);
+  }
+  100% {
+    transform: translateX(0);
+    background: linear-gradient(90deg, rgb(0, 0, 0), rgb(255, 208, 0), rgb(0, 0, 0));
+    color: red;
+  }
+}
+
+.glitch-button:focus {
+  animation: glitch 0.3s linear infinite;
+}
