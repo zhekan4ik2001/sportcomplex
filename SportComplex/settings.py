@@ -81,7 +81,7 @@ DATABASES = {
         'USER': 'sportcomplex_admin',
         'PASSWORD': '12345678',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
 
