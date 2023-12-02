@@ -107,8 +107,6 @@ $do$;
 ```
 4. Создайте модели в базе данных:
 ```
-```
 python manage.py makemigrations application
 python manage.py migrate application
-```
 ```

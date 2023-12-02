@@ -15,7 +15,7 @@ class CustomUserManager(BaseUserManager):
         if (not password):
             raise ValueError("Password must be set")
         if (not gender):
-            gender = Human_Gender.objects.get(gender_id = 3)
+            gender = Human_Gender.objects.get(gender_name = 'undefined')
         print (extra_fields, gender)
         user = self.model(username=username,
                           user_gender=gender,
@@ -44,7 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(
         name='username',
-        max_length=129,
+        max_length=128,
         unique=True,
         help_text='Required. 128 characters or fewer. Letters, digits and @/./-/_ only.',
         error_messages={

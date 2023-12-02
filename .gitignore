@@ -1,5 +1,9 @@
 .vscode
 __pycache__
-avatars/*
+*.jpg
+*.jpeg
+*.png
+!favicon.png
+!avatars
 migrations/
-pplication/migrations/
+application/migrations/
