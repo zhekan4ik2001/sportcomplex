@@ -25,9 +25,6 @@ class Human_Gender(models.Model):
 
 class Club_Client(models.Model):
     client_id = models.AutoField(primary_key=True)
-    client_login = models.CharField(max_length=64, blank=False)
-    client_passwd_salt = models.CharField(max_length=32, blank=False)
-    client_passwd_hash = models.CharField(max_length=256, blank=False)
     client_gender = models.ForeignKey('Human_Gender', on_delete=models.RESTRICT)
     client_first_name = models.CharField(max_length=128, blank=False)
     client_second_name = models.CharField(max_length=128, blank=False)
@@ -61,9 +58,6 @@ class Training(models.Model):
 
 class Club_Trainer(models.Model):
     trainer_id = models.AutoField(primary_key=True)
-    trainer_login = models.CharField(max_length=64, blank=False)
-    trainer_passwd_salt = models.CharField(max_length=32, blank=False)
-    trainer_passwd_hash = models.CharField(max_length=512, blank=False)
     trainer_gender = models.ForeignKey('Human_Gender', on_delete=models.RESTRICT)
     trainer_first_name = models.CharField(max_length=128, blank=False)
     trainer_second_name = models.CharField(max_length=128, blank=False)
