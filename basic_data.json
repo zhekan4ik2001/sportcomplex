@@ -1,0 +1,65 @@
+[
+  {
+    "model":"application.abonement_type",
+    "pk":1,
+    "fields":{
+      "abonement_type": "one-off"
+    }
+  },
+  {
+    "model":"application.abonement_type",
+    "pk":2,
+    "fields":{
+      "abonement_type": "month"
+    }
+  },
+  {
+    "model":"application.abonement_type",
+    "pk":3,
+    "fields":{
+      "abonement_type": "6 months"
+    }
+  },
+  {
+    "model":"application.abonement_type",
+    "pk":4,
+    "fields":{
+      "abonement_type": "year"
+    }
+  },
+  {
+    "model":"application.human_gender",
+    "pk":1,
+    "fields":{
+      "gender_name": "male"
+    }
+  },
+  {
+    "model":"application.human_gender",
+    "pk":2,
+    "fields":{
+      "gender_name": "female"
+    }
+  },
+  {
+    "model":"application.human_gender",
+    "pk":3,
+    "fields":{
+      "gender_name": "undefined"
+    }
+  },
+  {
+    "model":"application.training_type",
+    "pk":1,
+    "fields":{
+      "training_type": "group"
+    }
+  },
+  {
+    "model":"application.training_type",
+    "pk":2,
+    "fields":{
+      "training_type": "individual"
+    }
+  }
+]

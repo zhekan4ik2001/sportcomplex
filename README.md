@@ -53,14 +53,62 @@ GRANT ALL PRIVILEGES ON DATABASE sportcomplex_database TO sportcomplex_admin;
 python manage.py makemigrations
 python manage.py migrate
 ```
+Если на первой команде появилась ошибка `permission denied`, то для PostgreSQL это сиправляется командой:
+`ALTER DATABASE sportcomplex_database OWNER TO sportcomplex_admin;`
+
 ## Создание аккаунта администратора сайта
 ```
 python manage.py createsuperuser
 ```
 Будут запрошены имя пользователя, почта и пароль.
 
+## Заполнение таблиц базовой информацией
+Выполняется командой:
+```
+python manage.py loaddata basic
+```
+
 ## Запуск сервера
 На Windows необходимо в Брандмауэре открыть порт 8000. После открытия порта нужно перейти в директорию проекта и применить команду запуска сервера:
 ```
 python manage.py runserver
+```
+
+# Внесение изменений в модель
+Если изменения не являются критичными, будет достаточно ввести команды
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+Иначе при попытке внесения изменений возникают ошибки на подобие 
+`django.db.utils.ProgrammingError: column "client_id" of relation "application_club_client" does not exist`
+то необходимо пересоздать таблицы в базе данных. Для этого сохраните их содержимое, а затем выполните следующее:
+1. Удалите папку application/migrations;
+2. Выполните команду `DELETE FROM django_migrations WHERE app = 'application'` в psql;
+3. Выполните удаление таблиц с помощью кода:
+```
+DO
+$do$
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_type = 'BASE TABLE'
+        AND table_schema = 'public'
+        AND table_name ILIKE ('application_' || '%')
+    LOOP
+        EXECUTE 'DROP TABLE ' || 'public.' || quote_ident(row.table_name) || ' CASCADE ';
+        RAISE INFO 'Dropped table: %', 'public.' || quote_ident(row.table_name);
+    END LOOP;
+END;
+$do$;
+```
+4. Создайте модели в базе данных:
+```
+```
+python manage.py makemigrations application
+python manage.py migrate application
+```
 ```
