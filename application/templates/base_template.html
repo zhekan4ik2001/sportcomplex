@@ -29,7 +29,9 @@
               {% if user.is_authenticated %}
               <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="{{user.avatar.url}}" alt="profile pic" class="rounded-circle" width="32" height="32">
+                  {% if user.avatar %}
+                    <img src="{{user.avatar.url}}" alt="profile pic" class="rounded-circle" width="32" height="32">
+                  {% endif %}
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                   <li><a class="dropdown-item" href="profile">{% translate "Profile" %}</a></li>
