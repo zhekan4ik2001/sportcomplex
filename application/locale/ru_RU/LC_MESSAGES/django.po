@@ -1,0 +1,222 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-03 14:24+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\application\admin.py:25 .\application\admin.py:42
+msgid "Fundamental Permissions"
+msgstr "Базовые разрешения"
+
+#: .\application\admin.py:29 .\application\admin.py:46
+msgid "Group Permissions"
+msgstr "Групповые разрешения"
+
+#: .\application\admin.py:39
+msgid "Personal info"
+msgstr "Персональная информация"
+
+#: .\application\admin.py:57
+msgid "Adminitration"
+msgstr "Администрирование"
+
+#: .\application\admin.py:58
+msgid "Site Administration"
+msgstr "Администрирование сайта"
+
+#: .\application\admin.py:59
+msgid "Management"
+msgstr "Управление"
+
+#: .\application\apps.py:7
+msgid "SportСomplex"
+msgstr "Спорт-комплекс"
+
+#: .\application\models.py:16
+msgid "gender"
+msgstr "Пол человека"
+
+#: .\application\models.py:17
+msgid "genders"
+msgstr "Виды пола человека"
+
+#: .\application\models.py:27
+msgid "Required. 128 characters or fewer. Letters, digits and @/./-/_ only."
+msgstr ""
+"Обязательное поле. Не более 128 символов. Допустимы только буквы, цифры и "
+"символы @/./-/_."
+
+#: .\application\models.py:29
+msgid "A user with that username already exists."
+msgstr "Пользователь с таким логином уже существует."
+
+#: .\application\models.py:31
+msgid "Username"
+msgstr "логин"
+
+#: .\application\models.py:38
+msgid "Human Gender"
+msgstr "Пол человека"
+
+#: .\application\models.py:42
+msgid "First name"
+msgstr "Имя"
+
+#: .\application\models.py:46
+msgid "Last name"
+msgstr "Фамилия"
+
+#: .\application\models.py:50
+msgid "Patronymic"
+msgstr "Отчество"
+
+#: .\application\models.py:54
+msgid "E-mail"
+msgstr "Эл. почта"
+
+#: .\application\models.py:57
+msgid "Phone number must match the format: '+999999999'. Max 15 digits."
+msgstr ""
+"Номер телефона должен соответствовать формату: '+999999999'. Максимум 15 "
+"цифр."
+
+#: .\application\models.py:60
+msgid "Phone number"
+msgstr "Номер телефона"
+
+#: .\application\models.py:64
+msgid "Avatar"
+msgstr "Аватар"
+
+#: .\application\models.py:68
+msgid "Is staff"
+msgstr "Сотрудник"
+
+#: .\application\models.py:72
+msgid "Is active"
+msgstr "Активен"
+
+#: .\application\models.py:76
+msgid "Joined"
+msgstr "Создан"
+
+#: .\application\models.py:86
+msgid "user"
+msgstr "Пользователь"
+
+#: .\application\models.py:87
+msgid "users"
+msgstr "Пользователи"
+
+#: .\application\models.py:108
+msgid "username="
+msgstr "логин="
+
+#: .\application\models.py:109
+msgid "password hash="
+msgstr "хэш пароля="
+
+#: .\application\models.py:110
+msgid "first name="
+msgstr "имя="
+
+#: .\application\models.py:111
+msgid "last name="
+msgstr "Фамилия"
+
+#: .\application\models.py:112
+msgid "patronymic="
+msgstr "отчество="
+
+#: .\application\models.py:113
+msgid "phone="
+msgstr "телефон="
+
+#: .\application\models.py:114
+msgid "email="
+msgstr "эл. почта="
+
+#: .\application\models.py:123
+msgid "Abonement type"
+msgstr "Тип абонемента"
+
+#: .\application\models.py:126
+msgid "abonement type"
+msgstr "Тип абонемента"
+
+#: .\application\models.py:127
+msgid "abonement types"
+msgstr "Тип абонемента"
+
+#: .\application\models.py:138
+msgid "Abonement type id"
+msgstr "Id типа абонемента"
+
+#: .\application\models.py:142
+msgid "Opened"
+msgstr "Открыт"
+
+#: .\application\models.py:146
+msgid "Expires"
+msgstr "Истекает"
+
+#: .\application\models.py:149
+msgid "abonement"
+msgstr "Управление"
+
+#: .\application\models.py:150
+msgid "abonements"
+msgstr "Управление"
+
+#: .\application\models.py:153
+msgid "type="
+msgstr "тип="
+
+#: .\application\models.py:154
+msgid "opened="
+msgstr "открыт="
+
+#: .\application\models.py:155
+msgid "expires="
+msgstr "истекает="
+
+#: .\application\models.py:165 .\application\models.py:182
+msgid "Training type"
+msgstr "Тип тренировки"
+
+#: .\application\models.py:168
+msgid "training type"
+msgstr "Тип тренировки"
+
+#: .\application\models.py:169
+msgid "training types"
+msgstr "Типы тренировки"
+
+#: .\application\models.py:186
+msgid "Training date"
+msgstr "Дата тренировки"
+
+#: .\application\models.py:189
+msgid "training"
+msgstr "Тренировка"
+
+#: .\application\models.py:190
+msgid "trainings"
+msgstr "Тренировки"
+
+#: .\application\templates\base_template.html:7
+msgid "Sport Complex"
+msgstr "Спорт-комплекс"

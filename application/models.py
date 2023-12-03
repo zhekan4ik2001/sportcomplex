@@ -5,17 +5,16 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import CustomUserManager
 from django.core.mail import send_mail
+from django.utils.translation import gettext_lazy as _
 
 
 class Human_Gender(models.Model):
     gender_id = models.AutoField(primary_key=True)
     gender_name = models.CharField(max_length=9)
-    @classmethod
-    def get_udefined_gender(cls):
-        gender = cls.objects.get(
-            gender_name='undefined'
-        )
-        return gender
+    
+    class Meta:
+        verbose_name = _('gender')
+        verbose_name_plural = _('genders')
     def __str__(self):
         return self.gender_name
 
@@ -25,23 +24,57 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         name='username',
         max_length=128,
         unique=True,
-        help_text='Required. 128 characters or fewer. Letters, digits and @/./-/_ only.',
+        help_text=_('Required. 128 characters or fewer. Letters, digits and @/./-/_ only.'),
         error_messages={
-            'unique': "A user with that username already exists.",
+            'unique': _("A user with that username already exists."),
         },
+        verbose_name=_('Username')
     )
-    user_gender = models.ForeignKey(to='Human_Gender', default=Human_Gender.get_udefined_gender , on_delete=models.RESTRICT)
-    user_first_name = models.CharField(max_length=64, blank=False)
-    user_last_name = models.CharField(max_length=64, blank=False)
-    user_patronymic = models.CharField(max_length=64, blank=True, null=True)
-    user_email = models.EmailField(max_length=256, blank=True)
+    user_gender = models.ForeignKey(
+        to='Human_Gender', 
+        default=None, 
+        null=True,
+        on_delete=models.RESTRICT,
+        verbose_name=_('Human Gender')
+    )
+    user_first_name = models.CharField(
+        max_length=64, blank=False,
+        verbose_name=_('First name')
+    )
+    user_last_name = models.CharField(
+        max_length=64, blank=False,
+        verbose_name=_('Last name')
+    )
+    user_patronymic = models.CharField(
+        max_length=64, blank=True, null=True,
+        verbose_name=_('Patronymic')
+    )
+    user_email = models.EmailField(
+        max_length=256, blank=True,
+        verbose_name=_('E-mail')
+    )
     phone_regex = RegexValidator(regex=r'^\+?\d{9,15}$', 
-                                 message="Номер телефона вводится в соответствии с форматом: '+999999999'. Максимум 15 цифр.")
-    user_phone = models.CharField(validators=[phone_regex], max_length=16, blank=False)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    date_joined = models.DateTimeField(default=timezone.now)
+                                 message=_("Phone number must match the format: '+999999999'. Max 15 digits."))
+    user_phone = models.CharField(
+        validators=[phone_regex], max_length=16, blank=False,
+        verbose_name=_('Phone number')
+    )
+    avatar = models.ImageField(
+        upload_to='avatars/', null=True, blank=True,
+        verbose_name=_('Avatar')
+    )
+    is_staff = models.BooleanField(
+        default=False,
+        verbose_name=_('Is staff')
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('Is active')
+    )
+    date_joined = models.DateTimeField(
+        default=timezone.now,
+        verbose_name=_('Joined')
+    )
 
     USERNAME_FIELD = "username"
     EMAIL_FIELD = "email"
@@ -50,8 +83,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
     
     def get_full_name(self):
         full_name = '%s %s %s' % (self.user_last_name, self.user_first_name, self.user_patronymic)
@@ -71,40 +104,89 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
-        return f"client id={self.user_id}; \n" \
-            f"login={self.username} \n" \
-            f"password hash={self.password} \n" \
-            f"gender={self.user_gender} \n" \
-            f"first name={self.user_first_name} \n" \
-            f"second name={self.user_last_name} \n" \
-            f"patronymic={self.user_patronymic} \n" \
-            f"phone={self.user_phone} \n" \
-            f"email={self.user_email}."
+        return "Id=" + str(self.user_id) + "\n" + \
+            _("username=") + self.username + "\n" + \
+            _("password hash=") + self.password + "\n" + \
+            _("first name=") + self.user_first_name + "\n" + \
+            _("last name=") + self.user_last_name + "\n" + \
+            _("patronymic=") + self.user_patronymic + "\n" + \
+            _("phone=") + self.user_phone + "\n" + \
+            _("email=") + self.user_email + "."
 
 class Abonement_Type(models.Model):
-    abonement_type_id = models.AutoField(primary_key=True)
-    abonement_type = models.CharField(max_length=64, blank=False)
+    abonement_type_id = models.AutoField(
+        primary_key=True,
+        verbose_name='id'
+    )
+    abonement_type = models.CharField(
+        max_length=64, blank=False,
+        verbose_name=_('Abonement type')
+    )
+    class Meta:
+        verbose_name = _('abonement type')
+        verbose_name_plural = _('abonement types')
     def __str__(self):
         return self.abonement_type
 
 class Abonement(models.Model):
-    abonement_id = models.AutoField(primary_key=True)
-    abonement_type_id = models.ForeignKey('Abonement_Type', on_delete=models.RESTRICT, blank=False)
-    opened = models.DateField(auto_now=False, auto_now_add=False, blank=False)
-    expires = models.DateField(auto_now=False, auto_now_add=False, blank=False)
+    abonement_id = models.AutoField(
+        primary_key=True,
+        verbose_name='id'
+    )
+    abonement_type = models.ForeignKey(
+        to='Abonement_Type', on_delete=models.RESTRICT, blank=False,
+        verbose_name=_('Abonement type id')
+    )
+    opened = models.DateField(
+        auto_now=False, auto_now_add=False, blank=False,
+        verbose_name=_('Opened')
+    )
+    expires = models.DateField(
+        auto_now=False, auto_now_add=False, blank=False,
+        verbose_name=_('Expires')
+    )
+    class Meta:
+        verbose_name = _('abonement')
+        verbose_name_plural = _('abonements')
     def __str__(self):
-        return f"id={self.abonement_id}, type={self.abonement_type_id}, opened={self.opened}, expires={self.expires}"
+        return "Id=" + self.abonement_id + \
+        _("type=") + self.abonement_type + \
+        _("opened=") + self.opened + \
+        _("expires=") + self.expires + "."
 
 
 class Training_Type(models.Model):
-    training_type_id = models.AutoField(primary_key=True)
-    training_type = models.CharField(max_length=64, blank=False)
+    training_type_id = models.AutoField(
+        primary_key=True,
+        verbose_name='id'
+    )
+    training_type = models.CharField(
+        max_length=64, blank=False,
+        verbose_name=_('Training type')
+    )
+    class Meta:
+        verbose_name = _('training type')
+        verbose_name_plural = _('training types')
     def __str__(self):
         return self.training_type
 
 class Training(models.Model):
-    training_id = models.AutoField(primary_key=True)
-    training_type = models.ForeignKey('Training_Type', on_delete=models.RESTRICT, blank=False)
-    training_date = models.DateField(auto_now=False, auto_now_add=False)
+    training_id = models.AutoField(
+        primary_key=True,
+        verbose_name='id'
+    )
+    training_type = models.ForeignKey(
+        to='Training_Type', 
+        on_delete=models.RESTRICT, 
+        blank=False,
+        verbose_name=_('Training type')
+    )
+    training_date = models.DateField(
+        auto_now=False, auto_now_add=False,
+        verbose_name=_('Training date')
+    )
+    class Meta:
+        verbose_name = _('training')
+        verbose_name_plural = _('trainings')
     def __str__(self):
         return f"{self.training_id}: {self.training_type}, {self.training_date}."

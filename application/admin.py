@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import gettext_lazy as _
 
 admin.site.register(Abonement_Type)
 admin.site.register(Abonement)
@@ -21,11 +22,11 @@ class MyUserAdmin(UserAdmin):
         ('Personal info', {'fields': ('user_gender', 'user_first_name', 'user_last_name', 
                             'user_patronymic', 'user_phone',
                             'user_email')}),
-        ('Fundamental Permissions', {
+        (_('Fundamental Permissions'), {
             'classes': ('wide',),
             'fields': ('is_active', 'is_staff', 'is_superuser', )
         }),
-        ('Group Permissions', {
+        (_('Group Permissions'), {
             'classes': ('wide',),
             'fields': ('groups', 'user_permissions', )
         })
@@ -35,14 +36,14 @@ class MyUserAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': ('username', 'password1', 'password2')}
         ),
-        ('Personal info', {'fields': ('user_gender', 'user_first_name', 'user_last_name', 
+        (_('Personal info'), {'fields': ('user_gender', 'user_first_name', 'user_last_name', 
                             'user_patronymic', 'user_phone',
                             'user_email')}),
-        ('Fundamental Permissions', {
+        (_('Fundamental Permissions'), {
             'classes': ('wide',),
             'fields': ('is_active', 'is_staff', 'is_superuser', )
         }),
-        ('Group Permissions', {
+        (_('Group Permissions'), {
             'classes': ('wide',),
             'fields': ('groups', 'user_permissions', )
         })
@@ -53,3 +54,6 @@ class MyUserAdmin(UserAdmin):
     filter_horizontal = ('groups', 'user_permissions',)
 
 admin.site.register(CustomUser, MyUserAdmin)
+admin.site.index_title = _('Adminitration')
+admin.site.site_header = _('Site Administration')
+admin.site.site_title = _('Management')
