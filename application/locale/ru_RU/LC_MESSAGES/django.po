@@ -135,7 +135,7 @@ msgstr "имя="
 
 #: .\application\models.py:111
 msgid "last name="
-msgstr "Фамилия"
+msgstr "фамилия="
 
 #: .\application\models.py:112
 msgid "patronymic="

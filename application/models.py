@@ -104,13 +104,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
-        return "Id=" + str(self.user_id) + "\n" + \
-            _("username=") + self.username + "\n" + \
-            _("password hash=") + self.password + "\n" + \
-            _("first name=") + self.user_first_name + "\n" + \
-            _("last name=") + self.user_last_name + "\n" + \
-            _("patronymic=") + self.user_patronymic + "\n" + \
-            _("phone=") + self.user_phone + "\n" + \
+        temp_patr = '' if self.user_patronymic is None else self.user_patronymic
+        return "Id=" + str(self.user_id) + ";\n" + \
+            _("username=") + self.username + ";\n" + \
+            _("password hash=") + self.password + ";\n" + \
+            _("first name=") + self.user_first_name + ";\n" + \
+            _("last name=") + self.user_last_name + ";\n" + \
+            _("patronymic=") + temp_patr + ";\n" + \
+            _("phone=") + self.user_phone + ";\n" + \
             _("email=") + self.user_email + "."
 
 class Abonement_Type(models.Model):
