@@ -3,42 +3,21 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.contrib.auth.base_user import BaseUserManager
+from .managers import CustomUserManager
 from django.core.mail import send_mail
 
 
-
-class CustomUserManager(BaseUserManager):
-    def create_user(self, username, password, gender=None, **extra_fields):
-        if (not username):
-            raise ValueError("Username must be set")
-        if (not password):
-            raise ValueError("Password must be set")
-        if (not gender):
-            gender = Human_Gender.objects.get(gender_name = 'undefined')
-        print (extra_fields, gender)
-        user = self.model(username=username,
-                          user_gender=gender,
-                          **extra_fields)
-        user.set_password(password)
-        user.save()
-        return user
-
-    def create_superuser(self, username, password, gender=None, patronymic=None, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-        extra_fields.setdefault("is_active", True)
-
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-        return self.create_user(username=username, 
-                                password=password, 
-                                gender=gender,
-                                **extra_fields)
-
-
+class Human_Gender(models.Model):
+    gender_id = models.AutoField(primary_key=True)
+    gender_name = models.CharField(max_length=9)
+    @classmethod
+    def get_udefined_gender(cls):
+        gender = cls.objects.get(
+            gender_name='undefined'
+        )
+        return gender
+    def __str__(self):
+        return self.gender_name
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
@@ -51,7 +30,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             'unique': "A user with that username already exists.",
         },
     )
-    user_gender = models.ForeignKey(to='Human_Gender', on_delete=models.RESTRICT)
+    user_gender = models.ForeignKey(to='Human_Gender', default=Human_Gender.get_udefined_gender , on_delete=models.RESTRICT)
     user_first_name = models.CharField(max_length=64, blank=False)
     user_last_name = models.CharField(max_length=64, blank=False)
     user_patronymic = models.CharField(max_length=64, blank=True, null=True)
@@ -116,11 +95,6 @@ class Abonement(models.Model):
     def __str__(self):
         return f"id={self.abonement_id}, type={self.abonement_type_id}, opened={self.opened}, expires={self.expires}"
 
-class Human_Gender(models.Model):
-    gender_id = models.AutoField(primary_key=True)
-    gender_name = models.CharField(max_length=9)
-    def __str__(self):
-        return self.gender_name
 
 class Training_Type(models.Model):
     training_type_id = models.AutoField(primary_key=True)
