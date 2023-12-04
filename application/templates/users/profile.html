@@ -5,30 +5,72 @@
     <div class="row my-3 p-3">
         <h1>{% translate "This is the profile page for" %} {{user.username}}</h1>
     </div>
-    <img src="{{user.avatar.url}}"  width="100px" max-width="100px" max-height="100px" alt="Profile pic">
-    <div class="row my-1 p-1">
-        <p class="text-start">{% translate "First name" %}: {{user.user_first_name}}</p>
-    </div>
-    <div class="row my-1 p-1">
-        <p class="text-start">{% translate "Last name" %}: {{user.user_last_name}}</p>
-    </div>
-    {% if user.pantronymic %}
-        <div class="row my-1 p-1">
-            <p class="text-start">{% translate "Pantronymic" %}: {{user.pantrnymic}}</p>
+
+    <div class="card">
+        <div class="card-body">
+          <div class="d-flex flex-column align-items-center text-center">
+            <img src="{{user.avatar.url}}" alt="Admin" class="rounded-circle" width="150" height="150">
+            <div class="mt-3">
+              <h4>{{user.user_first_name}} {{user.user_last_name}}</h4>
+            </div>
+          </div>
         </div>
-    {% endif %}
-    <div class="row my-1 p-1">
-        <p class="text-start">{% translate "Gender" %}: {{user.user_gender}}</p>
-    </div>
-    <div class="row my-1 p-1">
-        <p class="text-start">{% translate "E-mail" %}: {{user.user_email}}</p>
-    </div>
-    <div class="row my-1 p-1">
-        <p class="text-start">{% translate "Phone number" %}: {{user.user_phone}}</p>
-    </div>
-    <div class="row my-1 p-1">
-        <p class="text-start">{% translate "Joined" %}: {{user.date_joined}}</p>
-    </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">{% translate "Full name" %}</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                {{user.user_last_name}} {{user.user_first_name}} {% if user.pantronymic %} {{user.pantrnymic}} {% endif %}
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">{% translate "Gender" %}</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                {{user.user_gender}}
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">{% translate "E-mail" %}</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                {{user.user_email}}
+            </div>
+          </div>
+          <hr>
+          <div class="row">{% if user.pantronymic %}
+            <div class="col-sm-3">
+              <h6 class="mb-0">{% translate "Phone number" %}</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                {{user.user_phone}}
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">{% translate "Joined" %}</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+                {{user.date_joined}}
+            </div>
+          </div>
+          <hr>
+          <!--<div class="row">
+            <div class="col-sm-12">
+              <a class="btn btn-info " target="__blank" >Edit</a>
+            </div>
+          </div>-->
+        </div>
+      </div>
 
 
 {% endblock bodyblock %}
