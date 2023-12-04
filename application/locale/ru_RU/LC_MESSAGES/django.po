@@ -83,6 +83,10 @@ msgstr "Фамилия"
 msgid "Patronymic"
 msgstr "Отчество"
 
+#: .\application\templates\users\profile.html:24
+msgid "Full name"
+msgstr "ФИО"
+
 #: .\application\models.py:54 .\application\templates\users\profile.html:24
 msgid "E-mail"
 msgstr "Эл. почта"
