@@ -77,7 +77,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
 
     USERNAME_FIELD = "username"
-    EMAIL_FIELD = "email"
+    EMAIL_FIELD = "user_email"
     REQUIRED_FIELDS = ['user_first_name', 'user_last_name', 'user_patronymic','user_phone', 'user_email']
 
     objects = CustomUserManager()
@@ -102,7 +102,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         # Sends an email to this User.
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
+    
+    @classmethod
+    def get_email_field_name(cls):
+        try:
+            return cls.EMAIL_FIELD
+        except AttributeError:
+            return "user_email"
+    
     def __str__(self):
         temp_patr = '' if self.user_patronymic is None else self.user_patronymic
         return "Id=" + str(self.user_id) + ";\n" + \

@@ -5,7 +5,7 @@
 {% if form.errors %}
   <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
-
+<p>LLLLLLLLLLLDDDDDDDDDDDD</p>
 {% if next %}
   {% if user.is_authenticated %}
     <p>Your account doesn't have access to this page. To proceed,
@@ -15,7 +15,7 @@
   {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'login' %}">
+<form method="post" action="{% url 'application:login' %}">
 {% csrf_token %}
 <table>
 
@@ -35,6 +35,6 @@
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+<p><a href="{% url 'application:password_reset' %}">Lost password?</a></p>
 
 {% endblock %}

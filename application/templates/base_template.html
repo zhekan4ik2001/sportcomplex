@@ -7,7 +7,7 @@
     <title>{% translate 'Sport Complex' %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	  <script th:src="@{/js/angular-1.7.5.min.js}" src="../static/js/angular-1.7.5.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 	  <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}" >
@@ -36,12 +36,12 @@
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                   <li><a class="dropdown-item" href="profile">{% translate "Profile" %}</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">{% translate "Sign out" %}</a></li>
+                  <li><a class="dropdown-item" href="{% url 'application:logout'%}?next={{request.path}}">{% translate "Sign out" %}</a></li>
                 </ul>
               </div>
               {% else %}
                 <div class="col-md-3 text-end">
-                  <a href="{% url 'login'%}?next={{request.path}}">{% translate "Login" %}</a>
+                  <a href="{% url 'application:login'%}?next={{request.path}}">{% translate "Login" %}</a>
                 </div>
               {% endif %}
             </div>
