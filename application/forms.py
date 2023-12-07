@@ -9,7 +9,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.template import loader
 from django.core.mail import EmailMultiAlternatives
-from .models import CustomUser
+from .models import CustomUser, Training, Training_Type
 
 class CustomPassResetForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -123,11 +123,30 @@ class UserLoginForm(AuthenticationForm):
         super(UserLoginForm, self).__init__(*args, **kwargs)
 
     username = UsernameField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'username', 'id': 'hello'}))
+        attrs={'class': 'form-control', 'placeholder': 'username', 'id': 'username'}))
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={
             'class': 'form-control',
             'placeholder': '*****',
-            'id': 'hi',
+            'id': 'password',
         }
 ))
+
+class TrainingSessionForm(forms.ModelForm):
+    training_type = forms.ModelChoiceField(
+        queryset=Training_Type.objects.all(),
+        required=True,
+        label=_('Training type'))
+    training_date = forms.DateField(
+        required=True,
+        label=_('Training date')
+    )
+    training_leader = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(groups__name='trainer'),
+        required=True,
+        label=_('Training leader')
+    )
+    class Meta:
+        model = Training
+        fields = "__all__"
+

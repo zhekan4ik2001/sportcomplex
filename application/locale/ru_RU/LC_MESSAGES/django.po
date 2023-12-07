@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-03 17:46+0300\n"
+"POT-Creation-Date: 2023-12-07 15:21+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,6 +45,27 @@ msgstr "Управление"
 msgid "SportСomplex"
 msgstr "Спорт-комплекс"
 
+#: .\application\forms.py:21
+msgid "Enter an email that associated with your account."
+msgstr "Введите эл. почту, связанную с вашим аккаунтом."
+
+#: .\application\forms.py:26
+msgid "E-mail is incorrect! Check format."
+msgstr "Эл. почта введена неверно! Проверьте формат ввода."
+
+#: .\application\forms.py:139 .\application\models.py:182
+#: .\application\models.py:199
+msgid "Training type"
+msgstr "Тип тренировки"
+
+#: .\application\forms.py:142 .\application\models.py:203
+msgid "Training date"
+msgstr "Дата тренировки"
+
+#: .\application\forms.py:147 .\application\models.py:209
+msgid "Training leader"
+msgstr "Тренер"
+
 #: .\application\models.py:16
 msgid "gender"
 msgstr "Пол человека"
@@ -71,11 +92,11 @@ msgstr "логин"
 msgid "Human Gender"
 msgstr "Пол человека"
 
-#: .\application\models.py:42 .\application\templates\users\profile.html:10
+#: .\application\models.py:42
 msgid "First name"
 msgstr "Имя"
 
-#: .\application\models.py:46 .\application\templates\users\profile.html:13
+#: .\application\models.py:46
 msgid "Last name"
 msgstr "Фамилия"
 
@@ -83,11 +104,8 @@ msgstr "Фамилия"
 msgid "Patronymic"
 msgstr "Отчество"
 
-#: .\application\templates\users\profile.html:24
-msgid "Full name"
-msgstr "ФИО"
-
-#: .\application\models.py:54 .\application\templates\users\profile.html:24
+#: .\application\models.py:54
+#: .\application\templates\application\profile.html:57
 msgid "E-mail"
 msgstr "Эл. почта"
 
@@ -97,7 +115,8 @@ msgstr ""
 "Номер телефона должен соответствовать формату: '+999999999'. Максимум 15 "
 "цифр."
 
-#: .\application\models.py:60 .\application\templates\users\profile.html:27
+#: .\application\models.py:60
+#: .\application\templates\application\profile.html:66
 msgid "Phone number"
 msgstr "Номер телефона"
 
@@ -113,113 +132,146 @@ msgstr "Сотрудник"
 msgid "Is active"
 msgstr "Активен"
 
-#: .\application\models.py:76 .\application\templates\users\profile.html:30
+#: .\application\models.py:76
+#: .\application\templates\application\profile.html:75
 msgid "Joined"
 msgstr "Создан"
 
-#: .\application\models.py:86
+#: .\application\models.py:85
 msgid "user"
 msgstr "Пользователь"
 
-#: .\application\models.py:87
+#: .\application\models.py:86
 msgid "users"
 msgstr "Пользователи"
 
-#: .\application\models.py:109
+#: .\application\models.py:116
 msgid "username="
 msgstr "логин="
 
-#: .\application\models.py:110
-msgid "password hash="
-msgstr "хэш пароля="
-
-#: .\application\models.py:111
+#: .\application\models.py:117 .\application\models.py:126
 msgid "first name="
 msgstr "имя="
 
-#: .\application\models.py:112
+#: .\application\models.py:118 .\application\models.py:127
 msgid "last name="
 msgstr "фамилия="
 
-#: .\application\models.py:113
+#: .\application\models.py:119 .\application\models.py:129
 msgid "patronymic="
 msgstr "отчество="
 
-#: .\application\models.py:114
+#: .\application\models.py:120
 msgid "phone="
 msgstr "телефон="
 
-#: .\application\models.py:115
+#: .\application\models.py:121
 msgid "email="
 msgstr "эл. почта="
 
-#: .\application\models.py:124
+#: .\application\models.py:140
 msgid "Abonement type"
 msgstr "Тип абонемента"
 
-#: .\application\models.py:127
+#: .\application\models.py:143
 msgid "abonement type"
 msgstr "Тип абонемента"
 
-#: .\application\models.py:128
+#: .\application\models.py:144
 msgid "abonement types"
 msgstr "Тип абонемента"
 
-#: .\application\models.py:139
+#: .\application\models.py:155
 msgid "Abonement type id"
 msgstr "Id типа абонемента"
 
-#: .\application\models.py:143
+#: .\application\models.py:159
 msgid "Opened"
 msgstr "Открыт"
 
-#: .\application\models.py:147
+#: .\application\models.py:163
 msgid "Expires"
 msgstr "Истекает"
 
-#: .\application\models.py:150
+#: .\application\models.py:166
 msgid "abonement"
 msgstr "Управление"
 
-#: .\application\models.py:151
+#: .\application\models.py:167
 msgid "abonements"
 msgstr "Управление"
 
-#: .\application\models.py:154
+#: .\application\models.py:170
 msgid "type="
 msgstr "тип="
 
-#: .\application\models.py:155
+#: .\application\models.py:171
 msgid "opened="
 msgstr "открыт="
 
-#: .\application\models.py:156
+#: .\application\models.py:172
 msgid "expires="
 msgstr "истекает="
 
-#: .\application\models.py:166 .\application\models.py:183
-msgid "Training type"
-msgstr "Тип тренировки"
-
-#: .\application\models.py:169
+#: .\application\models.py:185
 msgid "training type"
 msgstr "Тип тренировки"
 
-#: .\application\models.py:170
+#: .\application\models.py:186
 msgid "training types"
 msgstr "Типы тренировки"
 
-#: .\application\models.py:187
-msgid "Training date"
-msgstr "Дата тренировки"
-
-#: .\application\models.py:190
+#: .\application\models.py:212
 msgid "training"
 msgstr "Тренировка"
 
-#: .\application\models.py:191
+#: .\application\models.py:213
 msgid "trainings"
 msgstr "Тренировки"
+
+#: .\application\templates\application\profile.html:27
+msgid "Full name"
+msgstr "ФИО"
+
+#: .\application\templates\application\profile.html:39
+msgid "Gender"
+msgstr "Пол пользователя"
+
+#: .\application\templates\application\profile.html:48
+msgid "Status"
+msgstr "Статус"
+
+#: .\application\templates\application\profile.html:88
+msgid "Schedule"
+msgstr "Расписание"
+
+#: .\application\templates\application\schedule.html:5
+msgid "Training Schedule"
+msgstr "Расписание занятий"
+
+#: .\application\templates\application\schedule.html:9
+msgid "at"
+msgstr "в"
+
+#: .\application\templates\application\schedule.html:10
+msgid "leader"
+msgstr "тренер"
+
+#: .\application\templates\application\schedule.html:23
+msgid "Training type:"
+msgstr "Тип тренировки:"
+
+#: .\application\templates\application\schedule.html:28
+msgid "Training date:"
+msgstr "Дата тренировки:"
+
+#: .\application\templates\application\schedule.html:33
+msgid "Leader:"
+msgstr "Тренер:"
+
+#: .\application\templates\application\schedule.html:36
+msgid "Add Training Session"
+msgstr "Добавить занятие"
 
 #: .\application\templates\base_template.html:7
 msgid "Sport Complex"
@@ -237,28 +289,14 @@ msgstr "ссылка2"
 msgid "link3"
 msgstr "ссылка3"
 
-#: .\application\templates\base_template.html:35
+#: .\application\templates\base_template.html:39
 msgid "Profile"
 msgstr "Профиль"
 
-#: .\application\templates\base_template.html:37
+#: .\application\templates\base_template.html:41
 msgid "Sign out"
 msgstr "Выход"
 
-#: .\application\templates\base_template.html:42
+#: .\application\templates\base_template.html:46
 msgid "Login"
 msgstr "Вход"
-
-#: .\application\templates\users\profile.html:6
-msgid "This is the profile page for"
-msgstr "Это страница профиля"
-
-#: .\application\templates\users\profile.html:17
-#, fuzzy
-#| msgid "Patronymic"
-msgid "Pantronymic"
-msgstr "Отчество"
-
-#: .\application\templates\users\profile.html:21
-msgid "Gender"
-msgstr "Пол пользователя"

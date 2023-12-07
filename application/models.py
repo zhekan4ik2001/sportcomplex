@@ -81,13 +81,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['user_first_name', 'user_last_name', 'user_patronymic','user_phone', 'user_email']
 
     objects = CustomUserManager()
-
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
     
     def get_full_name(self):
-        full_name = '%s %s %s' % (self.user_last_name, self.user_first_name, self.user_patronymic)
+        full_name = '%s %s' % (self.user_last_name, self.user_first_name)
+        if (self.user_patronymic) :
+            full_name += self.user_patronymic
         return full_name.strip()
 
     def get_short_name(self):
@@ -109,17 +110,25 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return cls.EMAIL_FIELD
         except AttributeError:
             return "user_email"
-    
-    def __str__(self):
+    def get_full_info(self):
         temp_patr = '' if self.user_patronymic is None else self.user_patronymic
         return "Id=" + str(self.user_id) + ";\n" + \
             _("username=") + self.username + ";\n" + \
-            _("password hash=") + self.password + ";\n" + \
             _("first name=") + self.user_first_name + ";\n" + \
             _("last name=") + self.user_last_name + ";\n" + \
             _("patronymic=") + temp_patr + ";\n" + \
             _("phone=") + self.user_phone + ";\n" + \
             _("email=") + self.user_email + "."
+    
+    def __str__(self):
+        temp_patr = '' if self.user_patronymic is None else self.user_patronymic
+        return_text = "Id=" + str(self.user_id) + ";\n" + \
+            _("first name=") + self.user_first_name + ";\n" + \
+            _("last name=") + self.user_last_name
+        if (self.user_patronymic):
+            return_text += _("patronymic=") + temp_patr
+        return_text += "."
+        return return_text
 
 class Abonement_Type(models.Model):
     abonement_type_id = models.AutoField(
@@ -192,6 +201,12 @@ class Training(models.Model):
     training_date = models.DateField(
         auto_now=False, auto_now_add=False,
         verbose_name=_('Training date')
+    )
+    training_leader = models.ForeignKey(
+        to='CustomUser',
+        on_delete=models.CASCADE, 
+        blank=False,
+        verbose_name=_('Training leader')
     )
     class Meta:
         verbose_name = _('training')

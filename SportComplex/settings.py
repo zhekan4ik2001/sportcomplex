@@ -170,7 +170,7 @@ MEDIA_URL = '/media/'
 #        'file': {
 #            'level': 'DEBUG',
 #            'class': 'logging.FileHandler',
-#            'filename': 'log/log.log',
+#            'filename': path.join(BASE_DIR, 'log/log.log'),
 #            'formatter': 'simple'
 #        },
 #    },

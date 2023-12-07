@@ -22,7 +22,7 @@
               </a>
       
               <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-secondary">{% translate "Home" %}</a></li>
+                <li><a href="/" class="nav-link px-2 link-secondary">{% translate "Home" %}</a></li>
                 <li><a href="#" class="nav-link px-2 link-dark">{% translate "link2" %}</a></li>
                 <li><a href="#" class="nav-link px-2 link-dark">{% translate "link3" %}</a></li>
               </ul>
@@ -30,7 +30,9 @@
               <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                   {% if user.avatar %}
-                    <img src="{{user.avatar.url}}" alt="profile pic" class="rounded-circle" width="32" height="32">
+                    <img src="{{user.avatar.url}}" alt="avatar" class="rounded-circle" width="32" height="32">
+                  {% else %}
+                    <img src="{% static 'images/default_avatar.jpg' %}" alt="avatar" class="rounded-circle" width="32" height="32">
                   {% endif %}
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
