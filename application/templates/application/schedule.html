@@ -1,0 +1,39 @@
+{% extends "base_template.html" %}
+{% block bodyblock %}
+{% load static %}
+{% load i18n %}
+<h1>{% translate "Training Schedule" %}</h1>
+<ul>
+    {% for session in training_sessions %}
+            <li>№{{ session.training_id }}: {{ session.training_type }} 
+                {% translate "at" %} {{ session.training_date }}, 
+                {% translate "leader" %} {{ session.training_leader.get_full_name }}
+                
+            </li>
+    {% endfor %}
+</ul>
+{% load user_tags %}
+{% if user.is_authenticated and request.user|has_group:"trainer" %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.training_type.errors }}
+        <label for="{{ form.training_type.id_for_label }}">{% translate "Training type:" %}</label>
+        {{ form.training_type }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.training_date.errors }}
+        <label for="{{ form.training_date.id_for_label }}">{% translate "Training date:" %}</label>
+        {{ form.training_date }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.training_leader.errors }}
+        <label for="{{ form.training_leader.id_for_label }}">{% translate "Leader:" %}</label>
+        {{ form.training_leader }}
+    </div>
+    <button type="submit">{% translate "Add Training Session" %}</button>
+</form>
+{% endif %}
+{% endblock %}
