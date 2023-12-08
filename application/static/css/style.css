@@ -111,3 +111,11 @@ body{
 .shadow-none {
   box-shadow: none!important;
 }
+
+td, th{
+  background-color: white;
+  border-radius: 10%;
+  border-color:black;
+  border-width: 3px;
+  padding: 10px;
+}
