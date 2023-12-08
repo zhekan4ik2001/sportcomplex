@@ -204,9 +204,16 @@ class Training(models.Model):
     )
     training_leader = models.ForeignKey(
         to='CustomUser',
+        related_name='leader',
         on_delete=models.CASCADE, 
         blank=False,
         verbose_name=_('Training leader')
+    )
+    clients = models.ManyToManyField(
+        to='CustomUser', 
+        related_name='clients',
+        blank=False,
+        verbose_name=_('Client')
     )
     class Meta:
         verbose_name = _('training')

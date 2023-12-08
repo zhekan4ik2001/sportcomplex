@@ -62,4 +62,25 @@
       "training_type": "individual"
     }
   }
+  {
+    "model":"auth.group",
+    "pk":1,
+    "fields":{
+      "training_type": "admin"
+    }
+  }
+  {
+    "model":"auth.group",
+    "pk":2,
+    "fields":{
+      "training_type": "trainer"
+    }
+  }
+  {
+    "model":"auth.group",
+    "pk":3,
+    "fields":{
+      "training_type": "client"
+    }
+  }
 ]

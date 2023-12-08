@@ -146,7 +146,12 @@ class TrainingSessionForm(forms.ModelForm):
         required=True,
         label=_('Training leader')
     )
+    clients = forms.ModelMultipleChoiceField(
+        queryset=CustomUser.objects.filter(groups__name='client'),
+        required=True,
+        label=_('Clients'),
+        widget=forms.CheckboxSelectMultiple
+    )
     class Meta:
         model = Training
         fields = "__all__"
-

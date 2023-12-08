@@ -55,20 +55,21 @@ class ScheduleView(TemplateView):
     def post(self, request):
         if (not self.is_in_group(request.user)):
             return ('application:index')
-        data = TrainingSessionForm(request.POST)
-        if data.is_valid():
-            data.save()
+        data_form = TrainingSessionForm(request.POST)
+        if data_form.is_valid():
+            data_form.save()
             return redirect('application:schedule')
 
-    def put(self, request, *args, **kwargs):
-        if (not self.is_in_group(request.user)):
-            return ('application:index')
-        training_session = get_object_or_404(Training, training_id=kwargs.training_id)
-        form = TrainingSessionForm(instance=training_session)
-        if request.method == 'POST':
-            form = TrainingSessionForm(request.POST, instance=training_session)
-            if form.is_valid():
-                form.save()
-                return redirect('application:schedule')
-        return render(request, 'application/schedule.html', {'form': form})
+    #def put(self, request, *args, **kwargs):
+    #    if (not self.is_in_group(request.user)):
+    #        return ('application:index')
+    #    training_session = get_object_or_404(Training, training_id=kwargs.training_id)
+    #    form = TrainingSessionForm(instance=training_session)
+    #    
+    #    if request.method == 'POST':
+    #        form = TrainingSessionForm(request.POST, instance=training_session)
+    #        if form.is_valid():
+    #            form.save()
+    #            return redirect('application:schedule')
+    #    return render(request, 'application/schedule.html', {'form': form})
 
