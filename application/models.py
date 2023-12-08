@@ -88,7 +88,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         full_name = '%s %s' % (self.user_last_name, self.user_first_name)
         if (self.user_patronymic) :
-            full_name += self.user_patronymic
+            full_name += ' '+self.user_patronymic
         return full_name.strip()
 
     def get_short_name(self):
