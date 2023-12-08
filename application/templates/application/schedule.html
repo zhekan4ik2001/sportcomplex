@@ -26,6 +26,11 @@
                     <label for="{{ form.training_leader.id_for_label }}">{% translate "Leader:" %}</label>
                     {{ form.training_leader }}
                 </div>
+                <div class="fieldWrapper">
+                    {{ form.clients.errors }}
+                    <label for="{{ form.training_leader.id_for_label }}">{% translate "Clients:" %}</label>
+                    {{ form.clients }}
+                </div>
                 <button type="submit">{% translate "Add Training Session" %}</button>
             </form>
         {% endif %}
@@ -54,21 +59,6 @@
             </button>
         </div>
     </div>
-<<<<<<< HEAD
-    <div class="fieldWrapper">
-        {{ form.training_leader.errors }}
-        <label for="{{ form.training_leader.id_for_label }}">{% translate "Leader:" %}</label>
-        {{ form.training_leader }}
-    </div>
-    <div class="fieldWrapper">
-        {{ form.clients.errors }}
-        <label for="{{ form.clients.id_for_label }}">{% translate "Clients:" %}</label>
-        {{ form.clients }}
-    </div>
-    <button type="submit">{% translate "Add Training Session" %}</button>
-</form>
-{% endif %}
-=======
 </div>
 
 
@@ -132,5 +122,4 @@
 
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
->>>>>>> 2bd3139adab982ff52b40eea3135268d73539524
 {% endblock %}
