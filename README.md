@@ -52,7 +52,7 @@ pip install psycopg2
 ### База данных
 Для работы сервера понадобится база данных, создаваемая в PostgreSQL. Можно запустить psql в консоли или пользоваться графическим приложением pgAdmin.
 ```
-CREATE DATABASE sportcomplex_database
+CREATE DATABASE sportcomplex_database;
 ```
 Создание пользователя (администратора), через которого будут проводиться манипуляции с базой данных:
 ```

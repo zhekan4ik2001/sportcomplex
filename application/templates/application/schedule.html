@@ -2,7 +2,7 @@
 {% block bodyblock %}
 {% load static %}
 {% load i18n %}
-<h1>{% translate "Training Schedule" %}</h1>
+<h1 style="padding-left: 15rem;">{% translate "Training Schedule" %}</h1>
 
 {% load user_tags %}
 <div class="row d-flex justify-content-center">
@@ -40,12 +40,12 @@
             {% for session in training_sessions %}
                     <div class="traning"
                          data-type="{{session.training_type}}"
-                         data-date="{{ session.training_date|date:'m/d/Y' }}"
+                         data-date="{{ session.training_date|date:'Y-m-d' }}"
                          data-train="{{ session.training_leader.get_full_name }}">
                     </div>
             {% endfor %}    
         </div>
-        <div id="carouselExampleControls" class="carousel slide bg-secondary rounded" data-bs-ride="carousel" style="height: 385px;">
+        <div id="carouselExampleControls" class="carousel slide bg-secondary rounded" style="height: 385px;">
             <div class="carousel-inner">
                 <div class="carousel-item" id="month-1"></div>
                 <div class="carousel-item active" id="month"></div>
@@ -60,21 +60,47 @@
         </div>
     </div>
 </div>
-
-
+  
+  <!-- Модальное окно -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body" id="training_window">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <script>
 
         function checkTraning(date){
             let check = "false";
             $(".traning").each(function(i, val){
-                console.log(val.dataset['date']);
-                console.log(date.toLocaleDateString());
-                if(val.dataset['date'] == date.toLocaleDateString()){
-                    check = [val.dataset['type'], val.dataset['train']];
+                if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
+                    check = "true";
                 }
             });
             return check;
+        }
+
+        function openTrainingWindow(date){
+            let html = "";
+            $("#exampleModalLabel").empty().append("Тренировки "+date.toDateString())
+            $(".traning").each(function(i, val){
+                if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
+                    html += "type: "+val.dataset['type']+" trainer: "+val.dataset['train']+"<br>";
+                }
+            });
+
+            $("#training_window").empty().append(html);
         }
 
         function displayCalendar(year, month, id) {
@@ -91,10 +117,8 @@
                         calendarHtml += "<td></td>";
                     } else {
                         let info = checkTraning(new Date(year, month, day))
-                        if (info[0] == "individual"){
-                            calendarHtml += "<td class='bg-success text-white'>" + day + "</td>";
-                        } else if(info[0] == "group"){
-                            calendarHtml += "<td class='bg-primary text-white'>" + day + "</td>";
+                        if (info == "true"){
+                            calendarHtml += "<td style='cursor:pointer;' class='bg-primary text-white' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick='openTrainingWindow(new Date("+year+", "+month+", "+day+"))'>" + day + "</td>";
                         } else {
                             calendarHtml += "<td>" + day + "</td>";
                         }

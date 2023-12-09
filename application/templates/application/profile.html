@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block bodyblock %}
-
+<h1 style="padding-left: 15rem;">{% translate "Profile" %}</h1>
     <div class="row d-flex justify-content-center">
         <div class="card m-3 w-25">
             <div class="card-body">
@@ -84,8 +84,8 @@
                 <div class="row">
                     <div class="col-sm-3">
                     </div>
-                    <div class="col-sm-9 text-secondary">
-                        <a href="/schedule" class="nav-link px-2 link-secondary">{% translate "Schedule" %}</a>
+                    <div class="col-sm-9">
+                        <a class="btn bg-primary p-2 text-white" href="/schedule">{% translate "Schedule" %}</a>
                     </div>
                 </div>
                 <hr>
