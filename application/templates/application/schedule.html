@@ -45,7 +45,7 @@
                     </div>
             {% endfor %}    
         </div>
-        <div id="carouselExampleControls" class="carousel slide bg-secondary rounded" data-bs-ride="carousel" style="height: 385px;">
+        <div id="carouselExampleControls" class="carousel slide bg-secondary rounded" style="height: 385px;">
             <div class="carousel-inner">
                 <div class="carousel-item" id="month-1"></div>
                 <div class="carousel-item active" id="month"></div>
@@ -91,9 +91,7 @@
                         calendarHtml += "<td></td>";
                     } else {
                         let info = checkTraning(new Date(year, month, day))
-                        if (info[0] == "individual"){
-                            calendarHtml += "<td class='bg-success text-white'>" + day + "</td>";
-                        } else if(info[0] == "group"){
+                        if (info != "false"){
                             calendarHtml += "<td class='bg-primary text-white'>" + day + "</td>";
                         } else {
                             calendarHtml += "<td>" + day + "</td>";
