@@ -55,9 +55,11 @@ class ScheduleView(TemplateView):
     def post(self, request):
         if (not self.is_in_group(request.user)):
             return ('application:index')
-        data_form = TrainingSessionForm(request.POST)
-        if data_form.is_valid():
-            data_form.save()
+        temp_data = TrainingSessionForm(request.POST)
+        if temp_data.is_valid():
+            new_data = temp_data.save(commit=False)
+            new_data.training_leader_id = request.user.user_id
+            new_data.save()
             return redirect('application:schedule')
 
     #def put(self, request, *args, **kwargs):
