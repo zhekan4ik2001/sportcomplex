@@ -135,22 +135,41 @@ class UserLoginForm(AuthenticationForm):
 class TrainingSessionForm(forms.ModelForm):
     training_type = forms.ModelChoiceField(
         queryset=Training_Type.objects.all(),
-        required=True,
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'id': 'training_type',
+            'required': 'True'
+        }),
         label=_('Training type'))
     training_date = forms.DateField(
-        required=True,
+        required=False,
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'id': 'training_date',
+            'required': 'True'
+        }),
         label=_('Training date')
     )
     training_leader = forms.ModelChoiceField(
         queryset=CustomUser.objects.filter(groups__name='trainer'),
-        required=True,
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'id': 'training_type',
+            'required': 'True'
+        }),
         label=_('Training leader')
     )
     clients = forms.ModelMultipleChoiceField(
         queryset=CustomUser.objects.filter(groups__name='client'),
         required=True,
         label=_('Clients'),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple(attrs={
+            'class': 'form-check',
+            'id': 'training_type'
+        }
+        )
     )
     class Meta:
         model = Training

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from .models import *
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
@@ -53,7 +54,31 @@ class MyUserAdmin(UserAdmin):
 
     filter_horizontal = ('groups', 'user_permissions',)
 
+class MyTrainingAdmin(admin.ModelAdmin):
+    model = Training
+    list_display = ('training_type', 'training_date', 
+                    'training_leader')
+    list_filter = ('training_date',)
+
+    fieldsets = (
+        (None, {'fields': ('training_type', 'training_date', 'training_leader',)}),
+        (_('Clients'), {
+            'classes': ('wide',),
+            'fields': ('clients',)
+        })
+    )
+    add_fieldsets = (
+        (None, {'fields': ('training_type', 'training_date', 'training_leader', 
+                            'clients')}),
+    )
+    search_fields =  ('training_type', 'training_date', 'training_leader')
+    ordering = ('training_date',)
+
+    filter_horizontal = ('clients',)
+
 admin.site.register(CustomUser, MyUserAdmin)
+admin.site.unregister(Training)
+admin.site.register(model_or_iterable=Training, admin_class= MyTrainingAdmin)
 admin.site.index_title = _('Adminitration')
 admin.site.site_header = _('Site Administration')
 admin.site.site_title = _('Management')

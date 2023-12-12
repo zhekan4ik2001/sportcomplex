@@ -215,8 +215,23 @@ class Training(models.Model):
         blank=False,
         verbose_name=_('Client')
     )
+    @property
+    def full_name(self):
+        fname = self.training_leader.user_last_name + ' ' + self.training_leader.user_first_name
+        if (self.training_leader.user_patronymic and self.training_leader.user_patronymic != ''):
+            fname += ' ' + self.training_leader.user_patronymic
+        return fname
+
+    @property
+    def training_date_(self):
+        return self.training_date
+    
+    @property
+    def training_leader_name(self):
+        return self.training_leader.get_full_name
+
     class Meta:
         verbose_name = _('training')
         verbose_name_plural = _('trainings')
     def __str__(self):
-        return f"{self.training_id}: {self.training_type}, {self.training_date}."
+        return f"{self.training_id}: {self.training_type}, {self.training_date}, {self.training_leader_name()}."

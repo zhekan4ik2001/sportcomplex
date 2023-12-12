@@ -119,3 +119,13 @@ td, th{
   border-width: 3px;
   padding: 10px;
 }
+.form-check {
+  overflow-y: auto;
+  max-height: 120px;
+  padding-left: 0;
+}
+
+.form-wrapper {
+  display: flex;
+  align-items: left;
+}

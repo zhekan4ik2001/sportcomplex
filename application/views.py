@@ -9,6 +9,10 @@ from django.views.generic.base import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import CustomPassResetForm, TrainingSessionForm
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from rest_framework import permissions, viewsets
+
+from .serializers import TrainingSerializer
 
 
 
@@ -23,6 +27,7 @@ def buff(request):
 def profile(request):
     return render(request, 'application/profile.html')
 
+
 class CustomResetPasswordView(SuccessMessageMixin, PasswordResetView):
     form_class = CustomPassResetForm
     template_name="registration/password_reset_form.html"
@@ -35,6 +40,15 @@ class CustomResetPasswordView(SuccessMessageMixin, PasswordResetView):
     success_url = 'password_reset_done'
 
 
+class TrainingViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Training.objects.all()#.order_by('training_date')
+    serializer_class = TrainingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 class ScheduleView(TemplateView):
     form_class = TrainingSessionForm
     template_name="application/schedule.html"
@@ -44,21 +58,42 @@ class ScheduleView(TemplateView):
         return user.groups.filter(name='trainer').exists() 
 
     def get(self, request):
-        training_sessions = Training.objects.all()
-        if (request.user.groups.filter(name='trainer').exists() ):
+        #print(training_serializer.data)
+        current_user = request.user
+        if (current_user.groups.filter(name='trainer').exists() ):
+            training_sessions = Training.objects.all().filter(training_leader__in = [current_user.user_id])
+            training_serializer = TrainingSerializer(training_sessions, many=True)
             form = TrainingSessionForm(request.POST)
-            return render(request, 'application/schedule.html', {'training_sessions': training_sessions,
+            return render(request, 'application/schedule.html', {'training_serializer': training_serializer.data,
                                                             'form': form})
+        elif (current_user.groups.filter(name='client').exists()):
+            training_sessions = Training.objects.all().filter(clients__in = [current_user.user_id])
+            print(Training.objects.all().filter(clients__in = [4]), current_user.user_id)
+            training_serializer = TrainingSerializer(training_sessions, many=True)
+            return render(request, 'application/schedule.html', {'training_serializer': training_serializer.data})
         else:
-            return render(request, 'application/schedule.html', {'training_sessions': training_sessions})
+            return redirect('application:index')
 
     def post(self, request):
         if (not self.is_in_group(request.user)):
-            return ('application:index')
-        data_form = TrainingSessionForm(request.POST)
-        if data_form.is_valid():
-            data_form.save()
+            return redirect('application:index')
+        temp_data = TrainingSessionForm(request.POST)
+        if temp_data.is_valid():
+            print(temp_data.fields)
+            if (temp_data.data.get('clients')):
+                new_data = temp_data.save(commit=False)
+                new_data.training_leader_id = request.user.user_id
+                print(new_data)
+                new_data.save()
+                temp_data.save_m2m()
+                return redirect('application:schedule')
+            else:
+                context = self.get_context_data(form=temp_data)
+                context.update({"error": "No clients defined."})
+                return self.render_to_response(context)
+        else:
             return redirect('application:schedule')
+    
 
     #def put(self, request, *args, **kwargs):
     #    if (not self.is_in_group(request.user)):
@@ -73,3 +108,14 @@ class ScheduleView(TemplateView):
     #            return redirect('application:schedule')
     #    return render(request, 'application/schedule.html', {'form': form})
 
+
+def schedule_delete(request):
+    id = request.POST.get('training_id')
+    if (not request.user.groups.filter(name='trainer').exists()):
+        return ('application:index')
+    schedule_record = get_object_or_404(Training, pk=id)
+    context = {'schedule_record': schedule_record}    
+    output = schedule_record.delete()
+    print(output)
+    messages.success(request,  'The schedule_record has been deleted successfully.')
+    return redirect('application:schedule')
