@@ -37,7 +37,7 @@
     <div class="card m-3 w-50">
         <div class="d-none">
             {% for session in training_serializer %}
-                    <div class="traning"
+                    <div class="training"
                          data-id="{{session.training_id}}"
                          data-type="{{session.training_type}}"
                          data-date="{{ session.training_date|date:'Y-m-d' }}"
@@ -83,7 +83,7 @@
 
         function checkTraning(date){
             let check = "false";
-            $(".traning").each(function(i, val){
+            $(".training").each(function(i, val){
                 if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
                     check = "true";
                 }
@@ -147,7 +147,7 @@
         function openTrainingWindow(date){
             let html = "";
             $("#exampleModalLabel").empty().append(gettext("Trainings") + " " +date.toDateString())
-            $(".traning").each(function(i, val){
+            $(".training").each(function(i, val){
                 if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
                     html += "<div class=\"form-wrapper\">" + gettext("type:") + " " + val.dataset['type'] + " " +gettext("trainer:") + " " + val.dataset['train'] +
                         `<form action=\"/schedule/delete\" method=\"post\">
@@ -171,7 +171,7 @@
         function openTrainingWindow(date){
             let html = "";
             $("#exampleModalLabel").empty().append(gettext("Trainings") + " " +date.toDateString())
-            $(".traning").each(function(i, val){
+            $(".training").each(function(i, val){
                 if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
                     html += gettext("type:") + " " + val.dataset['type'] + " " +
                     gettext("trainer:") + " " + val.dataset['train'] + "<br>";
