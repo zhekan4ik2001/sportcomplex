@@ -6,8 +6,8 @@
 
 {% load user_tags %}
 <div class="row d-flex justify-content-center">
+    {% if user.is_authenticated and request.user|has_group:"trainer" %}
     <div class="card m-3 w-25">
-        {% if user.is_authenticated and request.user|has_group:"trainer" %}
             <form method="post">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
@@ -32,15 +32,16 @@
                 </div>
                 <button type="submit" class="btn btn-primary">{% translate "Add Training Session" %}</button>
             </form>
+        </div>
         {% endif %}
-    </div>
     <div class="card m-3 w-50">
         <div class="d-none">
-            {% for session in training_sessions %}
+            {% for session in training_serializer %}
                     <div class="traning"
+                         data-id="{{session.training_id}}"
                          data-type="{{session.training_type}}"
                          data-date="{{ session.training_date|date:'Y-m-d' }}"
-                         data-train="{{ session.training_leader.get_full_name }}">
+                         data-train="{{ session.training_leader_name }}">
                     </div>
             {% endfor %}    
         </div>
@@ -66,7 +67,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">{% translate "Modal window header" %}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label={% translate "Close" %}></button>
         </div>
         <div class="modal-body" id="training_window">
           ...
@@ -90,17 +91,7 @@
             return check;
         }
 
-        function openTrainingWindow(date){
-            let html = "";
-            $("#exampleModalLabel").empty().append("Тренировки "+date.toDateString())
-            $(".traning").each(function(i, val){
-                if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
-                    html += "type: "+val.dataset['type']+" trainer: "+val.dataset['train']+"<br>";
-                }
-            });
-
-            $("#training_window").empty().append(html);
-        }
+        
 
         function displayCalendar(year, month, id) {
             let daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -133,7 +124,14 @@
             calendarHtml += "</table></div><div class='col-1'></div></div>";
             document.getElementById(id).innerHTML = calendarHtml;
         }
-
+        function deleteTraining(id) {
+            fetch('/schedule/' + id,  {
+              method: 'DELETE',
+              body: JSON.stringify({
+                "csrfmiddlewaretoken": '{{ csrf_token }}' }
+              )
+            })
+        }
         
 
         let today = new Date();
@@ -144,5 +142,45 @@
         displayCalendar(year, month+1, "month+1");
 
     </script>
+    {% if user.is_authenticated and request.user|has_group:"trainer" %}
+    <script>
+        function openTrainingWindow(date){
+            let html = "";
+            $("#exampleModalLabel").empty().append(gettext("Trainings") + " " +date.toDateString())
+            $(".traning").each(function(i, val){
+                if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
+                    html += "<div class=\"form-wrapper\">" + gettext("type:") + " " + val.dataset['type'] + " " +gettext("trainer:") + " " + val.dataset['train'] +
+                        `<form action=\"/schedule/delete\" method=\"post\">
+                        {% csrf_token %}
+                        <input type=\"hidden\" name=\"training_id\" value=\"` + val.dataset['id'] + "\">" +
+                        `<button type="submit" class="btn btn-danger">{% translate "Delete" %}</button>
+                        </form>
+                        <form action=\"/schedule/update\" method=\"post\">
+                        {% csrf_token %}
+                        <input type=\"hidden\" name=\"training_id\" value=\"` + val.dataset['id'] + "\">" +
+                        `<button type="submit" class="btn btn-secondary">{% translate "Update" %}</button>
+                        </form>
+                        </div> ` + "<br>";
+                }
+            });
+            $("#training_window").empty().append(html);
+        }
+    </script>
+    {% elif user.is_authenticated and request.user|has_group:"client" %}
+    <script>
+        function openTrainingWindow(date){
+            let html = "";
+            $("#exampleModalLabel").empty().append(gettext("Trainings") + " " +date.toDateString())
+            $(".traning").each(function(i, val){
+                if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
+                    html += gettext("type:") + " " + val.dataset['type'] + " " +
+                    gettext("trainer:") + " " + val.dataset['train'] + "<br>";
+                }
+            });
+            $("#training_window").empty().append(html);
+        }
+    </script>
+    {% endif %}
+    <script src="{% url 'javascript-catalog' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 {% endblock %}

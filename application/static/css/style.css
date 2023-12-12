@@ -124,3 +124,8 @@ td, th{
   max-height: 120px;
   padding-left: 0;
 }
+
+.form-wrapper {
+  display: flex;
+  align-items: left;
+}

@@ -27,6 +27,8 @@ urlpatterns = [
     re_path(r'^password_reset_done/', 
         auth_views.PasswordResetDoneView.as_view(template_name="registration/password_reset_done.html")
         ),
-    re_path(r'schedule/', login_required(views.ScheduleView.as_view()),
-        name='schedule')
+    re_path(r'^schedule/$', login_required(views.ScheduleView.as_view()),
+        name='schedule'),
+    re_path(r'^schedule/delete$', views.schedule_delete,
+        name='schedule_delete')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

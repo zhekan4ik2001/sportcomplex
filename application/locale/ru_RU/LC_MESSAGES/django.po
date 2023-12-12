@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-07 15:21+0300\n"
+"POT-Creation-Date: 2023-12-12 16:03+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\application\admin.py:25 .\application\admin.py:42
+#: .\application\admin.py:26 .\application\admin.py:43
 msgid "Fundamental Permissions"
 msgstr "Базовые разрешения"
 
-#: .\application\admin.py:29 .\application\admin.py:46
+#: .\application\admin.py:30 .\application\admin.py:47
 msgid "Group Permissions"
 msgstr "Групповые разрешения"
 
-#: .\application\admin.py:39
+#: .\application\admin.py:40
 msgid "Personal info"
 msgstr "Персональная информация"
 
-#: .\application\admin.py:57
+#: .\application\admin.py:65 .\application\forms.py:167
+msgid "Clients"
+msgstr "Клиенты"
+
+#: .\application\admin.py:82
 msgid "Adminitration"
 msgstr "Администрирование"
 
-#: .\application\admin.py:58
+#: .\application\admin.py:83
 msgid "Site Administration"
 msgstr "Администрирование сайта"
 
-#: .\application\admin.py:59
+#: .\application\admin.py:84
 msgid "Management"
 msgstr "Управление"
 
@@ -53,16 +57,16 @@ msgstr "Введите эл. почту, связанную с вашим акк
 msgid "E-mail is incorrect! Check format."
 msgstr "Эл. почта введена неверно! Проверьте формат ввода."
 
-#: .\application\forms.py:139 .\application\models.py:182
+#: .\application\forms.py:144 .\application\models.py:182
 #: .\application\models.py:199
 msgid "Training type"
 msgstr "Тип тренировки"
 
-#: .\application\forms.py:142 .\application\models.py:203
+#: .\application\forms.py:152 .\application\models.py:203
 msgid "Training date"
 msgstr "Дата тренировки"
 
-#: .\application\forms.py:147 .\application\models.py:209
+#: .\application\forms.py:162 .\application\models.py:210
 msgid "Training leader"
 msgstr "Тренер"
 
@@ -221,13 +225,22 @@ msgstr "Тип тренировки"
 msgid "training types"
 msgstr "Типы тренировки"
 
-#: .\application\models.py:212
+#: .\application\models.py:216
+msgid "Client"
+msgstr "Клиент"
+
+#: .\application\models.py:234
 msgid "training"
 msgstr "Тренировка"
 
-#: .\application\models.py:213
+#: .\application\models.py:235
 msgid "trainings"
 msgstr "Тренировки"
+
+#: .\application\templates\application\profile.html:6
+#: .\application\templates\base_template.html:39
+msgid "Profile"
+msgstr "Профиль"
 
 #: .\application\templates\application\profile.html:27
 msgid "Full name"
@@ -249,29 +262,38 @@ msgstr "Расписание"
 msgid "Training Schedule"
 msgstr "Расписание занятий"
 
-#: .\application\templates\application\schedule.html:9
-msgid "at"
-msgstr "в"
-
-#: .\application\templates\application\schedule.html:10
-msgid "leader"
-msgstr "тренер"
-
-#: .\application\templates\application\schedule.html:23
+#: .\application\templates\application\schedule.html:16
 msgid "Training type:"
 msgstr "Тип тренировки:"
 
-#: .\application\templates\application\schedule.html:28
+#: .\application\templates\application\schedule.html:23
 msgid "Training date:"
 msgstr "Дата тренировки:"
 
-#: .\application\templates\application\schedule.html:33
-msgid "Leader:"
-msgstr "Тренер:"
+#: .\application\templates\application\schedule.html:30
+msgid "Clients:"
+msgstr "Клиенты:"
 
-#: .\application\templates\application\schedule.html:36
+#: .\application\templates\application\schedule.html:33
 msgid "Add Training Session"
 msgstr "Добавить занятие"
+
+#: .\application\templates\application\schedule.html:69
+msgid "Modal window header"
+msgstr "Заголовок модального окна"
+
+#: .\application\templates\application\schedule.html:70
+#: .\application\templates\application\schedule.html:76
+msgid "Close"
+msgstr "Закрыть"
+
+#: .\application\templates\application\schedule.html:156
+msgid "Delete"
+msgstr "Удалить"
+
+#: .\application\templates\application\schedule.html:161
+msgid "Update"
+msgstr "Изменить"
 
 #: .\application\templates\base_template.html:7
 msgid "Sport Complex"
@@ -289,10 +311,6 @@ msgstr "ссылка2"
 msgid "link3"
 msgstr "ссылка3"
 
-#: .\application\templates\base_template.html:39
-msgid "Profile"
-msgstr "Профиль"
-
 #: .\application\templates\base_template.html:41
 msgid "Sign out"
 msgstr "Выход"
@@ -300,3 +318,12 @@ msgstr "Выход"
 #: .\application\templates\base_template.html:46
 msgid "Login"
 msgstr "Вход"
+
+#~ msgid "at"
+#~ msgstr "в"
+
+#~ msgid "leader"
+#~ msgstr "тренер"
+
+#~ msgid "Leader:"
+#~ msgstr "Тренер:"

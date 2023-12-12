@@ -163,12 +163,11 @@ class TrainingSessionForm(forms.ModelForm):
     )
     clients = forms.ModelMultipleChoiceField(
         queryset=CustomUser.objects.filter(groups__name='client'),
-        required=False,
+        required=True,
         label=_('Clients'),
         widget=forms.CheckboxSelectMultiple(attrs={
             'class': 'form-check',
-            'id': 'training_type',
-            'required': 'True'
+            'id': 'training_type'
         }
         )
     )
