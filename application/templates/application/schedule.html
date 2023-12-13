@@ -127,8 +127,6 @@ footer{
             return check;
         }
 
-        
-
         function displayCalendar(year, month, id) {
             let daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -160,6 +158,19 @@ footer{
             calendarHtml += "</table></div><div class='col-1'></div></div>";
             document.getElementById(id).innerHTML = calendarHtml;
         }
+        
+        
+
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth();
+        displayCalendar(year, month-1, "month-1");
+        displayCalendar(year, month, "month");
+        displayCalendar(year, month+1, "month+1");
+
+    </script>
+    {% if user.is_authenticated and request.user|has_group:"trainer" %}
+    <script>
         function deleteTraining(id) {
             fetch('/schedule/' + id,  {
               method: 'DELETE',
@@ -178,18 +189,6 @@ footer{
             $('#training_window').addClass('d-none')
             $('#change_form_training').removeClass('d-none')
         }
-        
-
-        let today = new Date();
-        let year = today.getFullYear();
-        let month = today.getMonth();
-        displayCalendar(year, month-1, "month-1");
-        displayCalendar(year, month, "month");
-        displayCalendar(year, month+1, "month+1");
-
-    </script>
-    {% if user.is_authenticated and request.user|has_group:"trainer" %}
-    <script>
         function openTrainingWindow(date){
             let html = "";
             $("#exampleModalLabel").empty().append(gettext("Trainings") + " " +date.toDateString())
