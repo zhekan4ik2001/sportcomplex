@@ -5,6 +5,12 @@
 <h1 style="padding-left: 15rem;">{% translate "Training Schedule" %}</h1>
 
 {% load user_tags %}
+<style>
+footer{
+    position: fixed;
+    bottom:0;
+}
+</style>
 <div class="row d-flex justify-content-center">
     {% if user.is_authenticated and request.user|has_group:"trainer" %}
     <div class="card m-3 w-25">
@@ -69,8 +75,38 @@
           <h5 class="modal-title" id="exampleModalLabel">{% translate "Modal window header" %}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label={% translate "Close" %}></button>
         </div>
-        <div class="modal-body" id="training_window">
-          ...
+        <div class="modal-body">
+            <div id="training_window">
+            ...
+            </div>
+            <div class="d-none" id="change_form_training">
+                <form method="post" action="/schedule/update">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <input type="hidden" name="training_id">
+                    <div class="fieldWrapper">
+                        {{ form.training_type.errors }}
+                        <label for="{{ form.training_type.id_for_label }}">{% translate "Training type:" %}</label>
+                        {{ form.training_type }}
+                    </div>
+                    <div class="fieldWrapper">
+                        {% if form.training_date.errors %}
+                            {{ form.training_date.errors }}
+                        {% endif %}
+                        <label for="{{ form.training_date.id_for_label }}">{% translate "Training date:" %}</label>
+                        {{ form.training_date }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if form.clients.errors %}
+                            {{ form.clients.errors }}
+                        {% endif %}
+                        <label for="{{ form.clients.id_for_label }}">{% translate "Clients:" %}</label>
+                        {{ form.clients }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">{% translate Update %}</button>
+                    <button class="btn btn-primary" onclick="hideForm()">{% translate Cancel %}</button>
+                </form>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
@@ -132,6 +168,16 @@
               )
             })
         }
+
+        function hideForm(){
+            $('#change_form_training').addClass('d-none')
+            $('#training_window').removeClass('d-none')
+        }
+
+        function showForm(){
+            $('#training_window').addClass('d-none')
+            $('#change_form_training').removeClass('d-none')
+        }
         
 
         let today = new Date();
@@ -154,13 +200,7 @@
                         {% csrf_token %}
                         <input type=\"hidden\" name=\"training_id\" value=\"` + val.dataset['id'] + "\">" +
                         `<button type="submit" class="btn btn-danger">{% translate "Delete" %}</button>
-                        </form>
-                        <form action=\"/schedule/update\" method=\"post\">
-                        {% csrf_token %}
-                        <input type=\"hidden\" name=\"training_id\" value=\"` + val.dataset['id'] + "\">" +
-                        `<button type="submit" class="btn btn-secondary">{% translate "Update" %}</button>
-                        </form>
-                        </div> ` + "<br>";
+                        </form><button  class="btn btn-secondary" onclick="showForm()">{% translate "Update" %}</button>/div><br>"`;
                 }
             });
             $("#training_window").empty().append(html);
@@ -182,5 +222,4 @@
     </script>
     {% endif %}
     <script src="{% url 'javascript-catalog' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 {% endblock %}
