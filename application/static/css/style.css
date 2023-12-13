@@ -129,3 +129,9 @@ td, th{
   display: flex;
   align-items: left;
 }
+
+footer{
+  height:5rem;
+  width: 100%;
+  background-color: rgb(33, 75, 138);
+}

@@ -157,7 +157,7 @@ class TrainingSessionForm(forms.ModelForm):
         widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'training_type',
-            'required': 'True'
+            'required': 'False'
         }),
         label=_('Training leader')
     )
