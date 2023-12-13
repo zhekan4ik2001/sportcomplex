@@ -103,8 +103,8 @@ footer{
                         <label for="{{ form.clients.id_for_label }}">{% translate "Clients:" %}</label>
                         {{ form.clients }}
                     </div>
-                    <button type="submit" class="btn btn-primary">{% translate Update %}</button>
-                    <button class="btn btn-primary" onclick="hideForm()">{% translate Cancel %}</button>
+                    <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
+                    <button class="btn btn-danger" onclick="hideForm()">{% translate "Cancel" %}</button>
                 </form>
             </div>
         </div>
@@ -199,7 +199,7 @@ footer{
                         {% csrf_token %}
                         <input type=\"hidden\" name=\"training_id\" value=\"` + val.dataset['id'] + "\">" +
                         `<button type="submit" class="btn btn-danger">{% translate "Delete" %}</button>
-                        </form><button  class="btn btn-secondary" onclick="showForm()">{% translate "Update" %}</button>/div><br>"`;
+                        </form><button  class="btn btn-secondary" onclick="showForm()">{% translate "Update" %}</button></div><br>"`;
                 }
             });
             $("#training_window").empty().append(html);
