@@ -29,6 +29,10 @@ urlpatterns = [
         ),
     re_path(r'^schedule/$', login_required(views.ScheduleView.as_view()),
         name='schedule'),
+    re_path(r'^schedule/(?P<training_id>[0-9]+)$', views.schedule_get,
+        name='schedule'),
     re_path(r'^schedule/delete$', views.schedule_delete,
-        name='schedule_delete')
+        name='schedule_delete'),
+    re_path(r'^schedule/update$', views.schedule_update,
+        name='schedule_update')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

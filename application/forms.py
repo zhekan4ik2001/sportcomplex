@@ -133,6 +133,7 @@ class UserLoginForm(AuthenticationForm):
 ))
 
 class TrainingSessionForm(forms.ModelForm):
+    id_prefix = ''
     training_type = forms.ModelChoiceField(
         queryset=Training_Type.objects.all(),
         required=False,
@@ -142,13 +143,15 @@ class TrainingSessionForm(forms.ModelForm):
             'required': 'True'
         }),
         label=_('Training type'))
-    training_date = forms.DateField(
+    training_date = forms.DateTimeField(
         required=False,
-        widget=forms.DateInput(attrs={
+        widget=forms.DateTimeInput(attrs={
             'class': 'form-control',
             'id': 'training_date',
+            'type': 'datetime-local',
             'required': 'True'
         }),
+        input_formats=['%Y-%m-%dT%H:%M'],
         label=_('Training date')
     )
     training_leader = forms.ModelChoiceField(
@@ -167,10 +170,19 @@ class TrainingSessionForm(forms.ModelForm):
         label=_('Clients'),
         widget=forms.CheckboxSelectMultiple(attrs={
             'class': 'form-check',
-            'id': 'training_type'
-        }
+            'id': 'clients'
+            }
         )
     )
+
+    def setPrefix(self, id_prefix):
+        if (id_prefix and id_prefix != ''):
+            self.id_prefix = id_prefix
+            self.fields['training_type'].widget.attrs['id'] = self.id_prefix + 'training_type'
+            self.fields['training_date'].widget.attrs['id'] = self.id_prefix + 'training_date'
+            self.fields['training_leader'].widget.attrs['id'] = self.id_prefix + 'training_leader'
+            self.fields['clients'].widget.attrs['id'] = self.id_prefix + 'clients'
+
     class Meta:
         model = Training
         fields = "__all__"

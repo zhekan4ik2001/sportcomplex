@@ -112,21 +112,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return "user_email"
     def get_full_info(self):
         temp_patr = '' if self.user_patronymic is None else self.user_patronymic
-        return "Id=" + str(self.user_id) + ";\n" + \
+        return "id=" + str(self.user_id) + ";\n" + \
             _("username=") + self.username + ";\n" + \
-            _("first name=") + self.user_first_name + ";\n" + \
-            _("last name=") + self.user_last_name + ";\n" + \
-            _("patronymic=") + temp_patr + ";\n" + \
-            _("phone=") + self.user_phone + ";\n" + \
-            _("email=") + self.user_email + "."
+            _("Name=") + self.user_first_name + self.user_last_name + temp_patr + ";\n" + \
+            self.user_phone + ";\n" + \
+            self.user_email + "."
     
     def __str__(self):
         temp_patr = '' if self.user_patronymic is None else self.user_patronymic
-        return_text = "Id=" + str(self.user_id) + ";\n" + \
-            _("first name=") + self.user_first_name + ";\n" + \
-            _("last name=") + self.user_last_name
+        return_text = "(id=" + str(self.user_id) + ") " + \
+            self.user_first_name + " " + \
+            self.user_last_name
         if (self.user_patronymic):
-            return_text += _("patronymic=") + temp_patr
+            return_text += temp_patr
         return_text += "."
         return return_text
 
@@ -198,7 +196,7 @@ class Training(models.Model):
         blank=False,
         verbose_name=_('Training type')
     )
-    training_date = models.DateField(
+    training_date = models.DateTimeField(
         auto_now=False, auto_now_add=False,
         verbose_name=_('Training date')
     )

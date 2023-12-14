@@ -11,6 +11,8 @@ from .forms import CustomPassResetForm, TrainingSessionForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from rest_framework import permissions, viewsets
+from .decorators import has_permission
+from django.http import JsonResponse
 
 from .serializers import TrainingSerializer
 
@@ -64,26 +66,32 @@ class ScheduleView(TemplateView):
             training_sessions = Training.objects.all().filter(training_leader__in = [current_user.user_id])
             training_serializer = TrainingSerializer(training_sessions, many=True)
             form = TrainingSessionForm(request.POST)
+            form.setPrefix("add_")
+            upd_form = TrainingSessionForm()
+            upd_form.setPrefix("upd_")
             return render(request, 'application/schedule.html', {'training_serializer': training_serializer.data,
-                                                            'form': form})
+                                                            'form': form,
+                                                            'upd_form': upd_form})
         elif (current_user.groups.filter(name='client').exists()):
             training_sessions = Training.objects.all().filter(clients__in = [current_user.user_id])
-            print(Training.objects.all().filter(clients__in = [4]), current_user.user_id)
+            #print(Training.objects.all().filter(clients__in = [4]), current_user.user_id)
             training_serializer = TrainingSerializer(training_sessions, many=True)
             return render(request, 'application/schedule.html', {'training_serializer': training_serializer.data})
         else:
             return redirect('application:index')
+    
+    
 
     def post(self, request):
         if (not self.is_in_group(request.user)):
             return redirect('application:index')
         temp_data = TrainingSessionForm(request.POST)
         if temp_data.is_valid():
-            print(temp_data.fields)
+            #print(temp_data.fields)
             if (temp_data.data.get('clients')):
                 new_data = temp_data.save(commit=False)
                 new_data.training_leader_id = request.user.user_id
-                print(new_data)
+                #print(new_data)
                 new_data.save()
                 temp_data.save_m2m()
                 return redirect('application:schedule')
@@ -109,6 +117,8 @@ class ScheduleView(TemplateView):
     #    return render(request, 'application/schedule.html', {'form': form})
 
 
+@login_required
+@has_permission('trainer')
 def schedule_delete(request):
     id = request.POST.get('training_id')
     if (not request.user.groups.filter(name='trainer').exists()):
@@ -119,3 +129,48 @@ def schedule_delete(request):
     print(output)
     messages.success(request,  'The schedule_record has been deleted successfully.')
     return redirect('application:schedule')
+
+@login_required
+@has_permission('trainer')
+def schedule_get(request, training_id):
+    current_user = request.user
+    if (current_user.groups.filter(name='trainer').exists() or
+            current_user.groups.filter(name='client').exists()):
+        #training_id = request.GET.get('training_id')
+        training = Training.objects.get(training_id=training_id)
+        cl = training.clients.all()
+        print(cl)
+        clients = list()
+        for i in cl:
+            clients.append(str(i.user_id))
+        data = {
+            'training_id': training.training_id,
+            'training_date': training.training_date,
+            'training_type': training.training_type.training_type_id,
+            'clients': clients
+        }
+        return JsonResponse(data)
+    else:
+        return redirect('application:index')
+
+
+@login_required
+@has_permission('trainer')
+def schedule_update(request):
+    if request.method == 'POST':
+        print(request.__dict__)
+        instance = get_object_or_404(Training, training_id=request.POST.get('training_id'))
+        instance_id = instance.training_leader_id
+        temp_data = TrainingSessionForm(request.POST, instance=instance)
+        print(instance.training_leader)
+        if (instance and temp_data.is_valid()):
+            if (temp_data.data.get('clients')):
+                new_data = temp_data.save(commit=False)
+                new_data.training_leader_id = instance_id
+                new_data.save()
+                temp_data.save_m2m()
+                return redirect('application:schedule')
+
+        return redirect('application:schedule')
+    else:
+        return redirect('application:schedule')
