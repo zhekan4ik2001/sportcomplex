@@ -137,7 +137,7 @@ footer{
             let day = 1;
             for (let i = 0; i < 6; i++) {
                 calendarHtml += "<tr>";
-                for (let j = 0; j < 7; j++) {
+                for (let j = 1; j < 7; j++) {
                     if ((i === 0 && j < new Date(year, month, 1).getDay()) || day > daysInMonth) {
                         calendarHtml += "<td></td>";
                     } else {
@@ -150,7 +150,7 @@ footer{
                         day++;
                     }
                 }
-                calendarHtml += "</tr>";
+                calendarHtml += "<td>" + day++ + "</td></tr>";
                 if (day > daysInMonth) {
                     break;
                 }
@@ -259,5 +259,5 @@ footer{
     {% endif %}
     {% load static %}
     <script src="{% url 'javascript-catalog' %}"></script>
-    <script src="{% static 'js/basic.js' %}"
+    <script src="{% static 'js/basic.js' %}"></script>
 {% endblock %}
