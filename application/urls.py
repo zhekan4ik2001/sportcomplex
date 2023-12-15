@@ -11,7 +11,7 @@ app_name = 'application'
 
 urlpatterns = [
     re_path(r'^$', views.index, name='index'),
-    re_path(r'^profile$', views.profile, name='users-profile'),
+    re_path(r'^profile/?$', views.profile, name='users-profile'),
     re_path(r'^login/',
         auth_views.LoginView.as_view(
             template_name="registration/login.html",

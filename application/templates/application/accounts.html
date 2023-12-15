@@ -10,35 +10,176 @@ footer{
     bottom:0;
 }
 </style>
+
+
 {% if user.is_authenticated and request.user|has_group:"admin" %}
-<div class="d-none">
+<div>
+    <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertClient()">New</button><br>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Login</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
     {% for account_item in accounts_list %}
-            <div class="account"
-                 data-user_id="{{account_item.user_id}}"
-                 data-username="{{account_item.username}}"
-                 data-user_gender="{{account_item.user_gender}}"
-                 data-user_first_name="{{ account_item.user_first_name }}"
-                 data-user_last_name="{{ account_item.user_last_name }}"
-                 data-user_patronymic="{{ account_item.user_patronymic }}"
-                 data-user_email="{{ account_item.user_email }}"
-                 data-user_phone="{{ account_item.user_phone }}"
-                 >
-            </div>
-    {% endfor %}    
+        <tr>
+            <td>{{account_item.user_id}}</td>
+            <td>{{account_item.username}}</td>
+            <td>{{ account_item.user_first_name }} {{ account_item.user_last_name }} {{ account_item.user_patronymic }}</td>
+            <td>{{account_item.user_gender}}</td>
+            <td>{{ account_item.user_email }}</td>
+            <td>{{ account_item.user_phone }}</td>
+            <td>
+                <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeClient({{account_item.user_id}})">Change</button>
+                <button class="btn btn-danger" data-bs-toggle='modal' data-bs-target='#exampleModal'>Delete</button></td>
+        </tr>
+            
+    {% endfor %} 
+    </tbody>
+    </table>  
 </div>
-<div class="d-none">
+<div>
+    <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertAbonement()">New</button><br>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Period</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
     {% for abonement_item in abonements_list %}
-            <div class="abonement"
-                 data-id="{{abonement_item.abonement_id}}"
-                 data-abonement_type="{{abonement_item.abonement_type}}"
-                 data-opened="{{abonement_item.opened|date:'Y-m-d'}}"
-                 data-expires="{{ abonement_item.expires|date:'Y-m-d' }}">
-            </div>
+            <tr>
+                <td>{{abonement_item.abonement_id}}</td>
+                <td>{{abonement_item.abonement_type}}</td>
+                <td>{{abonement_item.opened|date:'Y-m-d'}} - {{ abonement_item.expires|date:'Y-m-d' }}</td>
+                <td>
+                    <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeAbonement({{abonement_item.abonement_id}})">Change</button>
+                    <button class="btn btn-danger" data-bs-toggle='modal' data-bs-target='#exampleModal'>Delete</button></td>
+            </tr>
     {% endfor %}    
+</tbody>
+</table>  
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% translate "Modal window header" %}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label={% translate "Close" %}></button>
+        </div>
+        <div class="modal-body">
+            <div id="form_insert_client">
+                <form>
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="btn btn-success">{% translate "Add" %}</button>
+                </form>
+            </div>
+            <div class="d-none" id="form_change_client">
+                <form>
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
+                    <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
+                </form>
+            </div>
+            <div class="d-none" id="form_insert_abonement">
+                <form>
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="btn btn-success">{% translate "Add" %}</button>
+                </form>
+            </div>
+            <div class="d-none" id="form_change_abonement">
+                <form>
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
+                    <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endif %}
     {% load static %}
+    <script>
+
+        function openInsertClient(){
+            
+            console.log("sdfg");
+            $('#form_insert_client').removeClass('d-none') 
+            if(!$('#form_change_client').hasClass('d-none')){
+                $('#form_change_client').addClass('d-none')  
+            }
+            if(!$('#form_insert_abonement').hasClass('d-none')){
+                $('#form_insert_abonement').addClass('d-none')  
+            }
+            if(!$('#form_change_abonement').hasClass('d-none')){
+                $('#form_change_abonement').addClass('d-none')  
+            }
+        }
+
+        function openChangeClient(id){
+
+            console.log("fds");
+            if(!$('#form_insert_client').hasClass('d-none')){
+                $('#form_insert_client').addClass('d-none')  
+            }
+            $('#form_change_client').removeClass('d-none')  
+            if(!$('#form_insert_abonement').hasClass('d-none')){
+                $('#form_insert_abonement').addClass('d-none')  
+            }
+            if(!$('#form_change_abonement').hasClass('d-none')){
+                $('#form_change_abonement').addClass('d-none')  
+            }
+        }
+        function openInsertAbonement(){
+
+            console.log("fd");
+            if(!$('#form_insert_client').hasClass('d-none')){
+                $('#form_insert_client').addClass('d-none')  
+            }
+            if(!$('#form_change_client').hasClass('d-none')){
+                $('#form_change_client').addClass('d-none')  
+            }
+            $('#form_insert_abonement').removeClass('d-none')
+            if(!$('#form_change_abonement').hasClass('d-none')){
+                $('#form_change_abonement').addClass('d-none')  
+            }
+        }
+
+        function openChangeAbonement(id){
+            console.log("jk");
+            if(!$('#form_insert_client').hasClass('d-none')){
+                $('#form_insert_client').addClass('d-none')  
+            }
+            if(!$('#form_change_client').hasClass('d-none')){
+                $('#form_change_client').addClass('d-none')  
+            }
+            if(!$('#form_insert_abonement').hasClass('d-none')){
+                $('#form_insert_abonement').addClass('d-none')  
+            }
+            $('#form_change_abonement').removeClass('d-none') 
+        }
+
+    </script>
     <script src="{% url 'javascript-catalog' %}"></script>
     <script src="{% static 'js/basic.js' %}"></script>
 {% endblock %}
