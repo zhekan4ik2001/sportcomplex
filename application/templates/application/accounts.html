@@ -1,0 +1,44 @@
+{% extends "base_template.html" %}
+{% block bodyblock %}
+{% load i18n %}
+<h1 style="padding-left: 15rem;">{% translate "Accounts of clients" %}</h1>
+
+{% load user_tags %}
+<style>
+footer{
+    position: fixed;
+    bottom:0;
+}
+</style>
+{% if user.is_authenticated and request.user|has_group:"admin" %}
+<div class="d-none">
+    {% for account_item in accounts_list %}
+            <div class="account"
+                 data-user_id="{{account_item.user_id}}"
+                 data-username="{{account_item.username}}"
+                 data-user_gender="{{account_item.user_gender}}"
+                 data-user_first_name="{{ account_item.user_first_name }}"
+                 data-user_last_name="{{ account_item.user_last_name }}"
+                 data-user_patronymic="{{ account_item.user_patronymic }}"
+                 data-user_email="{{ account_item.user_email }}"
+                 data-user_phone="{{ account_item.user_phone }}"
+                 >
+            </div>
+    {% endfor %}    
+</div>
+<div class="d-none">
+    {% for abonement_item in abonements_list %}
+            <div class="abonement"
+                 data-id="{{abonement_item.abonement_id}}"
+                 data-abonement_type="{{abonement_item.abonement_type}}"
+                 data-opened="{{abonement_item.opened|date:'Y-m-d'}}"
+                 data-expires="{{ abonement_item.expires|date:'Y-m-d' }}">
+            </div>
+    {% endfor %}    
+</div>
+
+{% endif %}
+    {% load static %}
+    <script src="{% url 'javascript-catalog' %}"></script>
+    <script src="{% static 'js/basic.js' %}"></script>
+{% endblock %}

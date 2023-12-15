@@ -19,7 +19,7 @@ class CustomPassResetForm(forms.Form):
                             label_suffix=None,
                             widget=forms.EmailInput(attrs={"autocomplete": "user_email"}),
                             help_text=_("Enter an email that associated with your account."))
-    def clean_email(self):
+    def clean_user_email(self):
         if (self.user_email.is_valid()):
             return self.cleaned_data.get('user_email')
         else:
@@ -186,3 +186,24 @@ class TrainingSessionForm(forms.ModelForm):
     class Meta:
         model = Training
         fields = "__all__"
+
+
+class CustomUserForm(forms.ModelForm):
+    id_prefix = ''
+
+    def setPrefix(self, id_prefix):
+        if (id_prefix and id_prefix != ''):
+            self.id_prefix = id_prefix
+            self.fields['username'].widget.attrs['id'] = self.id_prefix + 'username'
+            self.fields['password'].widget.attrs['id'] = self.id_prefix + 'password'
+            self.fields['user_gender'].widget.attrs['id'] = self.id_prefix + 'user_gender'
+            self.fields['user_first_name'].widget.attrs['id'] = self.id_prefix + 'user_first_name'
+            self.fields['user_last_name'].widget.attrs['id'] = self.id_prefix + 'user_last_name'
+            self.fields['user_patronymic'].widget.attrs['id'] = self.id_prefix + 'user_patronymic'
+            self.fields['user_email'].widget.attrs['id'] = self.id_prefix + 'user_email'
+            self.fields['user_phone'].widget.attrs['id'] = self.id_prefix + 'user_phone'
+    
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
+        exclude = ("user_id",)

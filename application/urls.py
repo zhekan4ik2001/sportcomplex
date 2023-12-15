@@ -11,7 +11,7 @@ app_name = 'application'
 
 urlpatterns = [
     re_path(r'^$', views.index, name='index'),
-    re_path(r'^profile/', views.profile, name='users-profile'),
+    re_path(r'^profile$', views.profile, name='users-profile'),
     re_path(r'^login/',
         auth_views.LoginView.as_view(
             template_name="registration/login.html",
@@ -34,5 +34,7 @@ urlpatterns = [
     re_path(r'^schedule/delete$', views.schedule_delete,
         name='schedule_delete'),
     re_path(r'^schedule/update$', views.schedule_update,
-        name='schedule_update')
+        name='schedule_update'),
+    re_path(r'^accounts/$', login_required(views.AccountsView.as_view()),
+        name='accounts')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

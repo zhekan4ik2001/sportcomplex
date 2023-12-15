@@ -15,25 +15,25 @@ footer{
     <div class="card m-3 w-25">
             <form method="post">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
+                {{ add_form.non_field_errors }}
                 <div class="fieldWrapper">
-                    {{ form.training_type.errors }}
-                    <label for="{{ form.training_type.id_for_label }}">{% translate "Training type:" %}</label>
-                    {{ form.training_type }}
+                    {{ add_form.training_type.errors }}
+                    <label for="{{ add_form.training_type.id_for_label }}">{% translate "Training type:" %}</label>
+                    {{ add_form.training_type }}
                 </div>
                 <div class="fieldWrapper">
-                    {% if form.training_date.errors %}
-                        {{ form.training_date.errors }}
+                    {% if add_form.training_date.errors %}
+                        {{ add_form.training_date.errors }}
                     {% endif %}
-                    <label for="{{ form.training_date.id_for_label }}">{% translate "Training date:" %}</label>
-                    {{ form.training_date }}
+                    <label for="{{ add_form.training_date.id_for_label }}">{% translate "Training date:" %}</label>
+                    {{ add_form.training_date }}
                 </div>
                 <div class="overflow-visible">
-                    {% if form.clients.errors %}
-                        {{ form.clients.errors }}
+                    {% if add_form.clients.errors %}
+                        {{ add_form.clients.errors }}
                     {% endif %}
-                    <label for="{{ form.clients.id_for_label }}">{% translate "Clients:" %}</label>
-                    {{ form.clients }}
+                    <label for="{{ add_form.clients.id_for_label }}">{% translate "Clients:" %}</label>
+                    {{ add_form.clients }}
                 </div>
                 <button type="submit" class="btn btn-primary">{% translate "Add Training Session" %}</button>
             </form>

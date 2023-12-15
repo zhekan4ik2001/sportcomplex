@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import CustomUser, Training
+from .models import CustomUser, Training, Abonement
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import classonlymethod
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.views import PasswordResetView
 from django.views.generic.base import TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import CustomPassResetForm, TrainingSessionForm
+from .forms import CustomPassResetForm, TrainingSessionForm, CustomUserForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from rest_framework import permissions, viewsets
@@ -56,34 +56,34 @@ class ScheduleView(TemplateView):
     template_name="application/schedule.html"
     
 
-    def is_in_group(self, user):
-        return user.groups.filter(name='trainer').exists() 
+    def is_in_group(self, user, group_name):
+        return user.groups.filter(name=group_name).exists() 
 
     def get(self, request):
         #print(training_serializer.data)
         current_user = request.user
-        if (current_user.groups.filter(name='trainer').exists() ):
-            training_sessions = Training.objects.all().filter(training_leader__in = [current_user.user_id])
+        if (self.is_in_group(current_user, 'trainer')):
+            training_sessions = Training.objects.filter(training_leader__in = [current_user.user_id])
             training_serializer = TrainingSerializer(training_sessions, many=True)
-            form = TrainingSessionForm(request.POST)
-            form.setPrefix("add_")
+            add_form = TrainingSessionForm(request.POST)
+            add_form.setPrefix("add_")
             upd_form = TrainingSessionForm()
             upd_form.setPrefix("upd_")
-            return render(request, 'application/schedule.html', {'training_serializer': training_serializer.data,
-                                                            'form': form,
+            return render(request, self.template_name, {'training_serializer': training_serializer.data,
+                                                            'add_form': add_form,
                                                             'upd_form': upd_form})
-        elif (current_user.groups.filter(name='client').exists()):
-            training_sessions = Training.objects.all().filter(clients__in = [current_user.user_id])
-            #print(Training.objects.all().filter(clients__in = [4]), current_user.user_id)
+        elif (self.is_in_group(current_user, 'client')):
+            training_sessions = Training.objects.filter(clients__in = [current_user.user_id])
+            #print(Training.objects.filter(clients__in = [4]), current_user.user_id)
             training_serializer = TrainingSerializer(training_sessions, many=True)
-            return render(request, 'application/schedule.html', {'training_serializer': training_serializer.data})
+            return render(request, self.template_name, {'training_serializer': training_serializer.data})
         else:
             return redirect('application:index')
     
     
 
     def post(self, request):
-        if (not self.is_in_group(request.user)):
+        if (not self.is_in_group(request.user, 'trainer')):
             return redirect('application:index')
         temp_data = TrainingSessionForm(request.POST)
         if temp_data.is_valid():
@@ -102,19 +102,6 @@ class ScheduleView(TemplateView):
         else:
             return redirect('application:schedule')
     
-
-    #def put(self, request, *args, **kwargs):
-    #    if (not self.is_in_group(request.user)):
-    #        return ('application:index')
-    #    training_session = get_object_or_404(Training, training_id=kwargs.training_id)
-    #    form = TrainingSessionForm(instance=training_session)
-    #    
-    #    if request.method == 'POST':
-    #        form = TrainingSessionForm(request.POST, instance=training_session)
-    #        if form.is_valid():
-    #            form.save()
-    #            return redirect('application:schedule')
-    #    return render(request, 'application/schedule.html', {'form': form})
 
 
 @login_required
@@ -174,3 +161,52 @@ def schedule_update(request):
         return redirect('application:schedule')
     else:
         return redirect('application:schedule')
+
+
+
+class AccountsView(TemplateView):
+    form_class = CustomUser
+    template_name="application/accounts.html"
+    
+
+    def is_in_group(self, user, group_name):
+        return user.groups.filter(name=group_name).exists() 
+
+    def get(self, request):
+        #print(training_serializer.data)
+        current_user = request.user
+        if (not self.is_in_group(request.user, 'admin')):
+            return redirect('application:index')
+
+        accounts_list = CustomUser.objects.filter(groups__name='client')
+        abonements_list = Abonement.objects.all()
+        add_form = CustomUserForm(request.POST)
+        add_form.setPrefix("add_")
+        upd_form = CustomUserForm()
+        upd_form.setPrefix("upd_")
+        return render(request, self.template_name, {'accounts_list': accounts_list,
+                                                    'abonements_list': abonements_list,
+                                                            'add_form': add_form,
+                                                            'upd_form': upd_form})
+    
+    
+
+    def post(self, request):
+        if (not self.is_in_group(request.user, 'admin')):
+            return redirect('application:index')
+        temp_data = CustomUserForm(request.POST)
+        if temp_data.is_valid():
+            #print(temp_data.fields)
+            if (temp_data.data.get('clients')):
+                new_data = temp_data.save(commit=False)
+                new_data.training_leader_id = request.user.user_id
+                #print(new_data)
+                new_data.save()
+                temp_data.save_m2m()
+                return redirect('application:schedule')
+            else:
+                context = self.get_context_data(form=temp_data)
+                context.update({"error": "No clients defined."})
+                return self.render_to_response(context)
+        else:
+            return redirect('application:schedule')
