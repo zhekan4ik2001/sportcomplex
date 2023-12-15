@@ -66,21 +66,24 @@
     "model":"auth.group",
     "pk":1,
     "fields":{
-      "training_type": "admin"
+      "training_type": "admin",
+      "permissions": [37,38,39,40,41,42,43,44,21,22,23,24]
     }
   },
   {
     "model":"auth.group",
     "pk":2,
     "fields":{
-      "training_type": "trainer"
+      "training_type": "trainer",
+      "permissions": [37,38,39,40]
     }
   },
   {
     "model":"auth.group",
     "pk":3,
     "fields":{
-      "training_type": "client"
+      "training_type": "client",
+      "permissions": [40]
     }
   }
 ]

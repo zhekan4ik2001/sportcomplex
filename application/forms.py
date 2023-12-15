@@ -188,22 +188,33 @@ class TrainingSessionForm(forms.ModelForm):
         fields = "__all__"
 
 
-class CustomUserForm(forms.ModelForm):
+class ClientForm(forms.ModelForm):
     id_prefix = ''
 
+    def __init__(self, edition=False, *args, **kwargs):
+        super(ClientForm, self).__init__(*args, **kwargs)
+        if (edition):
+            self.fields['password'].required = False
+            self.fields['password'].widget.attrs['required'] = False
+        else:
+            self.fields['password'].required = True
+            self.fields['password'].widget.attrs['required'] = True
+    
     def setPrefix(self, id_prefix):
         if (id_prefix and id_prefix != ''):
             self.id_prefix = id_prefix
             self.fields['username'].widget.attrs['id'] = self.id_prefix + 'username'
-            self.fields['password'].widget.attrs['id'] = self.id_prefix + 'password'
             self.fields['user_gender'].widget.attrs['id'] = self.id_prefix + 'user_gender'
             self.fields['user_first_name'].widget.attrs['id'] = self.id_prefix + 'user_first_name'
             self.fields['user_last_name'].widget.attrs['id'] = self.id_prefix + 'user_last_name'
             self.fields['user_patronymic'].widget.attrs['id'] = self.id_prefix + 'user_patronymic'
             self.fields['user_email'].widget.attrs['id'] = self.id_prefix + 'user_email'
             self.fields['user_phone'].widget.attrs['id'] = self.id_prefix + 'user_phone'
-    
+
     class Meta:
         model = CustomUser
-        fields = "__all__"
-        exclude = ("user_id",)
+        fields = ('username', 'password', 'user_gender', 'user_first_name', 
+                'user_last_name', 'user_patronymic', 'user_email', 'user_phone')
+
+
+

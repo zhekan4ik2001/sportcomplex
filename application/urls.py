@@ -27,14 +27,20 @@ urlpatterns = [
     re_path(r'^password_reset_done/', 
         auth_views.PasswordResetDoneView.as_view(template_name="registration/password_reset_done.html")
         ),
-    re_path(r'^schedule/$', login_required(views.ScheduleView.as_view()),
+    re_path(r'^schedule/?$', login_required(views.ScheduleView.as_view()),
         name='schedule'),
     re_path(r'^schedule/(?P<training_id>[0-9]+)$', views.schedule_get,
-        name='schedule'),
+        name='schedule_get'),
     re_path(r'^schedule/delete$', views.schedule_delete,
         name='schedule_delete'),
     re_path(r'^schedule/update$', views.schedule_update,
         name='schedule_update'),
     re_path(r'^accounts/$', login_required(views.AccountsView.as_view()),
-        name='accounts')
+        name='accounts'),
+    re_path(r'^accounts/(?P<user_id>[0-9]+)$', views.account_get,
+        name='account_get'),
+    re_path(r'^accounts/delete$', views.account_delete,
+        name='account_delete'),
+    re_path(r'^accounts/update$', views.account_update,
+        name='account_update'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

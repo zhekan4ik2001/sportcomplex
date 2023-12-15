@@ -28,7 +28,7 @@ footer{
             </tr>
         </thead>
         <tbody>
-    {% for account_item in accounts_list %}
+    {% for account_item in accounts_serializer %}
         <tr>
             <td>{{account_item.user_id}}</td>
             <td>{{account_item.username}}</td>
@@ -37,8 +37,16 @@ footer{
             <td>{{ account_item.user_email }}</td>
             <td>{{ account_item.user_phone }}</td>
             <td>
-                <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeClient({{account_item.user_id}})">Change</button>
-                <button class="btn btn-danger" data-bs-toggle='modal' data-bs-target='#exampleModal'>Delete</button></td>
+                <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeClient({{account_item.user_id}})">
+                    {% translate "Change" %}
+                </button>
+                <form action="/accounts/delete" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{account_item.user_id}}">
+                    <button class="btn btn-danger" type="submit">
+                        {% translate "Delete" %}
+                    </button></td>
+                </form>
         </tr>
             
     {% endfor %} 
@@ -46,14 +54,14 @@ footer{
     </table>  
 </div>
 <div>
-    <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertAbonement()">New</button><br>
+    <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertAbonement()">{% translate "New" %}</button><br>
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Type</th>
-                <th>Period</th>
-                <th>Action</th>
+                <th>{% translate "Type" %}</th>
+                <th>{% translate "Period" %}</th>
+                <th>{% translate "Action" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -63,8 +71,16 @@ footer{
                 <td>{{abonement_item.abonement_type}}</td>
                 <td>{{abonement_item.opened|date:'Y-m-d'}} - {{ abonement_item.expires|date:'Y-m-d' }}</td>
                 <td>
-                    <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeAbonement({{abonement_item.abonement_id}})">Change</button>
-                    <button class="btn btn-danger" data-bs-toggle='modal' data-bs-target='#exampleModal'>Delete</button></td>
+                    <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeAbonement({{abonement_item.abonement_id}})">
+                        {% translate "Change" %}
+                    </button>
+                    <form action="/abonements/delete" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="abonement_id" value="{{abonement_item.abonement_id}}">
+                        <button class="btn btn-danger" type="submit">
+                            {% translate "Delete" %}
+                        </button></td>
+                    </form>
             </tr>
     {% endfor %}    
 </tbody>
@@ -80,16 +96,118 @@ footer{
         </div>
         <div class="modal-body">
             <div id="form_insert_client">
-                <form>
+                <form method="post">
                     {% csrf_token %}
-                    
+                    {{ add_form.non_field_errors }}
+                    <div class="fieldWrapper">
+                        {{ add_form.username.errors }}
+                        <label for="{{ add_form.username.id_for_label }}">{% translate "Username:" %}</label>
+                        {{ add_form.username }}
+                    </div>
+                    <div class="fieldWrapper">
+                        {% if add_form.password.errors %}
+                            {{ add_form.password.errors }}
+                        {% endif %}
+                        <label for="{{ add_form.password.id_for_label }}">{% translate "Password:" %}</label>
+                        {{ add_form.password }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if add_form.user_gender.errors %}
+                            {{ add_form.user_gender.errors }}
+                        {% endif %}
+                        <label for="{{ add_form.user_gender.id_for_label }}">{% translate "Gender:" %}</label>
+                        {{ add_form.user_gender }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if add_form.user_last_name.errors %}
+                            {{ add_form.user_last_name.errors }}
+                        {% endif %}
+                        <label for="{{ add_form.user_last_name.id_for_label }}">{% translate "Last name:" %}</label>
+                        {{ add_form.user_last_name }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if add_form.user_first_name.errors %}
+                            {{ add_form.user_first_name.errors }}
+                        {% endif %}
+                        <label for="{{ add_form.user_first_name.id_for_label }}">{% translate "First name:" %}</label>
+                        {{ add_form.user_first_name }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if add_form.user_patronymic.errors %}
+                            {{ add_form.user_patronymic.errors }}
+                        {% endif %}
+                        <label for="{{ add_form.user_patronymic.id_for_label }}">{% translate "Patronymic:" %}</label>
+                        {{ add_form.user_patronymic }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if add_form.user_email.errors %}
+                            {{ add_form.user_email.errors }}
+                        {% endif %}
+                        <label for="{{ add_form.user_email.id_for_label }}">{% translate "E-mail:" %}</label>
+                        {{ add_form.user_email }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if add_form.user_phone.errors %}
+                            {{ add_form.user_phone.errors }}
+                        {% endif %}
+                        <label for="{{ add_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
+                        {{ add_form.user_phone }}
+                    </div>
                     <button type="submit" class="btn btn-success">{% translate "Add" %}</button>
                 </form>
             </div>
             <div class="d-none" id="form_change_client">
-                <form>
+                <form method="post" action="/accounts/update">
                     {% csrf_token %}
-                    
+                    <input type="hidden" name="user_id" id="upd_user_id">
+                    {{ upd_form.non_field_errors }}
+                    <div class="fieldWrapper">
+                        {{ upd_form.username.errors }}
+                        <label for="{{ upd_form.username.id_for_label }}">{% translate "Username:" %}</label>
+                        {{ upd_form.username }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_form.user_gender.errors %}
+                            {{ upd_form.user_gender.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.user_gender.id_for_label }}">{% translate "Gender:" %}</label>
+                        {{ upd_form.user_gender }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_form.user_last_name.errors %}
+                            {{ upd_form.user_last_name.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.user_last_name.id_for_label }}">{% translate "Last name:" %}</label>
+                        {{ upd_form.user_last_name }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_form.user_first_name.errors %}
+                            {{ upd_form.user_first_name.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.user_first_name.id_for_label }}">{% translate "First name:" %}</label>
+                        {{ upd_form.user_first_name }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_form.user_patronymic.errors %}
+                            {{ upd_form.user_patronymic.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.user_patronymic.id_for_label }}">{% translate "Patronymic:" %}</label>
+                        {{ upd_form.user_patronymic }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_form.user_email.errors %}
+                            {{ upd_form.user_email.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.user_email.id_for_label }}">{% translate "E-mail:" %}</label>
+                        {{ upd_form.user_email }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_form.user_phone.errors %}
+                            {{ upd_form.user_phone.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
+                        {{ upd_form.user_phone }}
+                    </div>
                     <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
                     <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
                 </form>
@@ -149,6 +267,25 @@ footer{
             if(!$('#form_change_abonement').hasClass('d-none')){
                 $('#form_change_abonement').addClass('d-none')  
             }
+            var accountData = $(this).serialize();
+            $.ajax({
+                type: 'GET',
+                url: '/accounts/' + id,
+                data: accountData,
+                success: function(response) {
+                    document.getElementById("upd_user_id").value = id;
+                    document.getElementById("upd_username").value = response.username;
+                    document.getElementById("upd_user_gender").value  = response.user_gender;
+                    document.getElementById("upd_user_first_name").value  = response.user_first_name;
+                    document.getElementById("upd_user_last_name").value  = response.user_last_name;
+                    document.getElementById("upd_user_patronymic").value  = response.user_patronymic;
+                    document.getElementById("upd_user_email").value  = response.user_email;
+                    document.getElementById("upd_user_phone").value  = response.user_phone;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
         function openInsertAbonement(){
 
@@ -177,6 +314,7 @@ footer{
                 $('#form_insert_abonement').addClass('d-none')  
             }
             $('#form_change_abonement').removeClass('d-none') 
+
         }
 
     </script>

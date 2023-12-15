@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Training, Training_Type
+from .models import Training, Training_Type, CustomUser, Human_Gender
 
 
 class TrainingSerializer(serializers.ModelSerializer):
@@ -39,3 +39,26 @@ class Training_TypeSerializer(serializers.ModelSerializer):
         model = Training_Type
         fields = "__all__"
 
+
+class Human_GenderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Human_Gender
+        fields = "__all__"
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    #basic_info = serializers.SerializerMethodField()
+    #full_name = serializers.SerializerMethodField()
+    #user_gender = serializers.SerializerMethodField()
+#
+    #def get_basic_info(self, obj):
+    #    return obj.basic_info
+    #
+    #def get_full_name(self, obj):
+    #    return obj.full_name
+    #
+    #def get_user_gender(self, obj):
+    #    return obj.user_gender
+    
+    class Meta:
+        model = CustomUser
+        fields = "__all__"

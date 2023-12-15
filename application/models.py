@@ -85,7 +85,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = _('user')
         verbose_name_plural = _('users')
     
-    def get_full_name(self):
+    @property
+    def full_name(self):
         full_name = '%s %s' % (self.user_last_name, self.user_first_name)
         if (self.user_patronymic) :
             full_name += ' '+self.user_patronymic
@@ -110,7 +111,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return cls.EMAIL_FIELD
         except AttributeError:
             return "user_email"
-    def get_full_info(self):
+    
+    @property
+    def basic_info(self):
         temp_patr = '' if self.user_patronymic is None else self.user_patronymic
         return "id=" + str(self.user_id) + ";\n" + \
             _("username=") + self.username + ";\n" + \
