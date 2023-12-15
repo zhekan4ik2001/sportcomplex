@@ -86,12 +86,22 @@
             </div>
             <hr>
             {% load user_tags %}
-            {% if request.user|has_group:"trainer" or request.user|has_group:"client" %} 
+            {% if user.is_authenticated %} 
                 <div class="row">
                     <div class="col-sm-3">
                     </div>
                     <div class="col-sm-9">
                         <a class="btn bg-primary p-2 text-white" href="/schedule">{% translate "Schedule" %}</a>
+                    </div>
+                </div>
+                <hr>
+            {% endif %}
+            {% if user.is_authenticated and request.user|has_group:"admin" %} 
+                <div class="row">
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-9">
+                        <a class="btn bg-primary p-2 text-white" href="/accounts">{% translate "Accounts" %}</a>
                     </div>
                 </div>
                 <hr>
