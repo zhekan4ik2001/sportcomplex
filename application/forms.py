@@ -9,7 +9,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.template import loader
 from django.core.mail import EmailMultiAlternatives
-from .models import CustomUser, Training, Training_Type
+from .models import *
 
 class CustomPassResetForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -217,4 +217,58 @@ class ClientForm(forms.ModelForm):
                 'user_last_name', 'user_patronymic', 'user_email', 'user_phone')
 
 
+class AbonementForm(forms.ModelForm):
+    id_prefix = ''
+    
+    abonement_type = forms.ModelChoiceField(
+        queryset=Abonement_Type.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'id': 'abonement_type',
+            'required': 'True'
+        }),
+        label=_('Type')
+    )
 
+    opened = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'id': 'opened',
+            'type': 'date',
+            'required': 'True'
+        }),
+        label=_('Opened')
+    )
+
+    expires = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={
+            'class': 'form-control',
+            'id': 'expires',
+            'type': 'date',
+            'required': 'True'
+        }),
+        label=_('Opened')
+    )
+
+    def __init__(self, edition=False, *args, **kwargs):
+        super(AbonementForm, self).__init__(*args, **kwargs)
+        if (edition):
+            self.fields['expires'].required = True
+            self.fields['expires'].widget.attrs['required'] = True
+        else:
+            self.fields['expires'].required = False
+            self.fields['expires'].widget.attrs['required'] = False
+    
+    def setPrefix(self, id_prefix):
+        if (id_prefix and id_prefix != ''):
+            self.id_prefix = id_prefix
+            self.fields['abonement_type'].widget.attrs['id'] = self.id_prefix + 'abonement_type'
+            self.fields['opened'].widget.attrs['id'] = self.id_prefix + 'opened'
+            self.fields['expires'].widget.attrs['id'] = self.id_prefix + 'expires'
+
+    class Meta:
+        model = Abonement
+        fields = ('abonement_type', 'opened', 'expires')

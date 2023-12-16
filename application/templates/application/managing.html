@@ -14,7 +14,7 @@ footer{
 
 {% if user.is_authenticated and request.user|has_group:"admin" %}
 <div>
-    <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertClient()">New</button><br>
+    <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertClient()">{% translate "New" %}</button><br>
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -32,7 +32,11 @@ footer{
         <tr>
             <td>{{account_item.user_id}}</td>
             <td>{{account_item.username}}</td>
-            <td>{{ account_item.user_first_name }} {{ account_item.user_last_name }} {{ account_item.user_patronymic }}</td>
+            <td>{{ account_item.user_first_name }} {{ account_item.user_last_name }} 
+                {% if account_item.user_patronymic %}
+                {{ account_item.user_patronymic }}
+                {% endif %}
+            </td>
             <td>{{account_item.user_gender}}</td>
             <td>{{ account_item.user_email }}</td>
             <td>{{ account_item.user_phone }}</td>
@@ -98,131 +102,168 @@ footer{
             <div id="form_insert_client">
                 <form method="post">
                     {% csrf_token %}
-                    {{ add_form.non_field_errors }}
+                    {{ add_client_form.non_field_errors }}
                     <div class="fieldWrapper">
-                        {{ add_form.username.errors }}
-                        <label for="{{ add_form.username.id_for_label }}">{% translate "Username:" %}</label>
-                        {{ add_form.username }}
+                        {{ add_client_form.username.errors }}
+                        <label for="{{ add_client_form.username.id_for_label }}">{% translate "Username:" %}</label>
+                        {{ add_client_form.username }}
                     </div>
                     <div class="fieldWrapper">
-                        {% if add_form.password.errors %}
-                            {{ add_form.password.errors }}
+                        {% if add_client_form.password.errors %}
+                            {{ add_client_form.password.errors }}
                         {% endif %}
-                        <label for="{{ add_form.password.id_for_label }}">{% translate "Password:" %}</label>
-                        {{ add_form.password }}
+                        <label for="{{ add_client_form.password.id_for_label }}">{% translate "Password:" %}</label>
+                        {{ add_client_form.password }}
                     </div>
                     <div class="overflow-visible">
-                        {% if add_form.user_gender.errors %}
-                            {{ add_form.user_gender.errors }}
+                        {% if add_client_form.user_gender.errors %}
+                            {{ add_client_form.user_gender.errors }}
                         {% endif %}
-                        <label for="{{ add_form.user_gender.id_for_label }}">{% translate "Gender:" %}</label>
-                        {{ add_form.user_gender }}
+                        <label for="{{ add_client_form.user_gender.id_for_label }}">{% translate "Gender:" %}</label>
+                        {{ add_client_form.user_gender }}
                     </div>
                     <div class="overflow-visible">
-                        {% if add_form.user_last_name.errors %}
-                            {{ add_form.user_last_name.errors }}
+                        {% if add_client_form.user_last_name.errors %}
+                            {{ add_client_form.user_last_name.errors }}
                         {% endif %}
-                        <label for="{{ add_form.user_last_name.id_for_label }}">{% translate "Last name:" %}</label>
-                        {{ add_form.user_last_name }}
+                        <label for="{{ add_client_form.user_last_name.id_for_label }}">{% translate "Last name:" %}</label>
+                        {{ add_client_form.user_last_name }}
                     </div>
                     <div class="overflow-visible">
-                        {% if add_form.user_first_name.errors %}
-                            {{ add_form.user_first_name.errors }}
+                        {% if add_client_form.user_first_name.errors %}
+                            {{ add_client_form.user_first_name.errors }}
                         {% endif %}
-                        <label for="{{ add_form.user_first_name.id_for_label }}">{% translate "First name:" %}</label>
-                        {{ add_form.user_first_name }}
+                        <label for="{{ add_client_form.user_first_name.id_for_label }}">{% translate "First name:" %}</label>
+                        {{ add_client_form.user_first_name }}
                     </div>
                     <div class="overflow-visible">
-                        {% if add_form.user_patronymic.errors %}
-                            {{ add_form.user_patronymic.errors }}
+                        {% if add_client_form.user_patronymic.errors %}
+                            {{ add_client_form.user_patronymic.errors }}
                         {% endif %}
-                        <label for="{{ add_form.user_patronymic.id_for_label }}">{% translate "Patronymic:" %}</label>
-                        {{ add_form.user_patronymic }}
+                        <label for="{{ add_client_form.user_patronymic.id_for_label }}">{% translate "Patronymic:" %}</label>
+                        {{ add_client_form.user_patronymic }}
                     </div>
                     <div class="overflow-visible">
-                        {% if add_form.user_email.errors %}
-                            {{ add_form.user_email.errors }}
+                        {% if add_client_form.user_email.errors %}
+                            {{ add_client_form.user_email.errors }}
                         {% endif %}
-                        <label for="{{ add_form.user_email.id_for_label }}">{% translate "E-mail:" %}</label>
-                        {{ add_form.user_email }}
+                        <label for="{{ add_client_form.user_email.id_for_label }}">{% translate "E-mail:" %}</label>
+                        {{ add_client_form.user_email }}
                     </div>
                     <div class="overflow-visible">
-                        {% if add_form.user_phone.errors %}
-                            {{ add_form.user_phone.errors }}
+                        {% if add_client_form.user_phone.errors %}
+                            {{ add_client_form.user_phone.errors }}
                         {% endif %}
-                        <label for="{{ add_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
-                        {{ add_form.user_phone }}
+                        <label for="{{ add_client_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
+                        {{ add_client_form.user_phone }}
                     </div>
-                    <button type="submit" class="btn btn-success">{% translate "Add" %}</button>
+                    <button type="submit" class="btn btn-success" name="add_client">{% translate "Add" %}</button>
                 </form>
             </div>
             <div class="d-none" id="form_change_client">
                 <form method="post" action="/accounts/update">
                     {% csrf_token %}
                     <input type="hidden" name="user_id" id="upd_user_id">
-                    {{ upd_form.non_field_errors }}
+                    {{ upd_client_form.non_field_errors }}
                     <div class="fieldWrapper">
-                        {{ upd_form.username.errors }}
-                        <label for="{{ upd_form.username.id_for_label }}">{% translate "Username:" %}</label>
-                        {{ upd_form.username }}
+                        {{ upd_client_form.username.errors }}
+                        <label for="{{ upd_client_form.username.id_for_label }}">{% translate "Username:" %}</label>
+                        {{ upd_client_form.username }}
                     </div>
                     <div class="overflow-visible">
-                        {% if upd_form.user_gender.errors %}
-                            {{ upd_form.user_gender.errors }}
+                        {% if upd_client_form.user_gender.errors %}
+                            {{ upd_client_form.user_gender.errors }}
                         {% endif %}
-                        <label for="{{ upd_form.user_gender.id_for_label }}">{% translate "Gender:" %}</label>
-                        {{ upd_form.user_gender }}
+                        <label for="{{ upd_client_form.user_gender.id_for_label }}">{% translate "Gender:" %}</label>
+                        {{ upd_client_form.user_gender }}
                     </div>
                     <div class="overflow-visible">
-                        {% if upd_form.user_last_name.errors %}
-                            {{ upd_form.user_last_name.errors }}
+                        {% if upd_client_form.user_last_name.errors %}
+                            {{ upd_client_form.user_last_name.errors }}
                         {% endif %}
-                        <label for="{{ upd_form.user_last_name.id_for_label }}">{% translate "Last name:" %}</label>
-                        {{ upd_form.user_last_name }}
+                        <label for="{{ upd_client_form.user_last_name.id_for_label }}">{% translate "Last name:" %}</label>
+                        {{ upd_client_form.user_last_name }}
                     </div>
                     <div class="overflow-visible">
-                        {% if upd_form.user_first_name.errors %}
-                            {{ upd_form.user_first_name.errors }}
+                        {% if upd_client_form.user_first_name.errors %}
+                            {{ upd_client_form.user_first_name.errors }}
                         {% endif %}
-                        <label for="{{ upd_form.user_first_name.id_for_label }}">{% translate "First name:" %}</label>
-                        {{ upd_form.user_first_name }}
+                        <label for="{{ upd_client_form.user_first_name.id_for_label }}">{% translate "First name:" %}</label>
+                        {{ upd_client_form.user_first_name }}
                     </div>
                     <div class="overflow-visible">
-                        {% if upd_form.user_patronymic.errors %}
-                            {{ upd_form.user_patronymic.errors }}
+                        {% if upd_client_form.user_patronymic.errors %}
+                            {{ upd_client_form.user_patronymic.errors }}
                         {% endif %}
-                        <label for="{{ upd_form.user_patronymic.id_for_label }}">{% translate "Patronymic:" %}</label>
-                        {{ upd_form.user_patronymic }}
+                        <label for="{{ upd_client_form.user_patronymic.id_for_label }}">{% translate "Patronymic:" %}</label>
+                        {{ upd_client_form.user_patronymic }}
                     </div>
                     <div class="overflow-visible">
-                        {% if upd_form.user_email.errors %}
-                            {{ upd_form.user_email.errors }}
+                        {% if upd_client_form.user_email.errors %}
+                            {{ upd_client_form.user_email.errors }}
                         {% endif %}
-                        <label for="{{ upd_form.user_email.id_for_label }}">{% translate "E-mail:" %}</label>
-                        {{ upd_form.user_email }}
+                        <label for="{{ upd_client_form.user_email.id_for_label }}">{% translate "E-mail:" %}</label>
+                        {{ upd_client_form.user_email }}
                     </div>
                     <div class="overflow-visible">
-                        {% if upd_form.user_phone.errors %}
-                            {{ upd_form.user_phone.errors }}
+                        {% if upd_client_form.user_phone.errors %}
+                            {{ upd_client_form.user_phone.errors }}
                         {% endif %}
-                        <label for="{{ upd_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
-                        {{ upd_form.user_phone }}
+                        <label for="{{ upd_client_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
+                        {{ upd_client_form.user_phone }}
                     </div>
                     <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
                     <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
                 </form>
             </div>
             <div class="d-none" id="form_insert_abonement">
-                <form>
+                <form method="post">
                     {% csrf_token %}
+                    {{ add_abonement_form.non_field_errors }}
+                    <div class="overflow-visible">
+                        {% if add_abonement_form.abonement_type.errors %}
+                            {{ add_abonement_form.abonement_type.errors }}
+                        {% endif %}
+                        <label for="{{ add_abonement_form.abonement_type.id_for_label }}">{% translate "Type:" %}</label>
+                        {{ add_abonement_form.abonement_type }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if add_abonement_form.opened.errors %}
+                            {{ add_abonement_form.opened.errors }}
+                        {% endif %}
+                        <label for="{{ add_abonement_form.opened.id_for_label }}">{% translate "Opened:" %}</label>
+                        {{ add_abonement_form.opened }}
+                    </div>
                     
-                    <button type="submit" class="btn btn-success">{% translate "Add" %}</button>
+                    <button type="submit" class="btn btn-success" name="add_abonement">{% translate "Add" %}</button>
                 </form>
             </div>
             <div class="d-none" id="form_change_abonement">
-                <form>
+                <form method="post" action="/abonements/update">
                     {% csrf_token %}
-                    
+                    <input type="hidden" name="abonement_id" id="upd_abonement_id">
+                    {{ upd_abonement_form.non_field_errors }}
+                    <div class="overflow-visible">
+                        {% if upd_abonement_form.abonement_type.errors %}
+                            {{ upd_abonement_form.abonement_type.errors }}
+                        {% endif %}
+                        <label for="{{ upd_abonement_form.abonement_type.id_for_label }}">{% translate "Gender:" %}</label>
+                        {{ upd_abonement_form.abonement_type }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_abonement_form.opened.errors %}
+                            {{ upd_abonement_form.opened.errors }}
+                        {% endif %}
+                        <label for="{{ upd_abonement_form.opened.id_for_label }}">{% translate "Gender:" %}</label>
+                        {{ upd_abonement_form.opened }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_abonement_form.expires.errors %}
+                            {{ upd_abonement_form.expires.errors }}
+                        {% endif %}
+                        <label for="{{ upd_abonement_form.expires.id_for_label }}">{% translate "Expires:" %}</label>
+                        {{ upd_abonement_form.expires }}
+                    </div>
                     <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
                     <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
                 </form>
@@ -314,7 +355,21 @@ footer{
                 $('#form_insert_abonement').addClass('d-none')  
             }
             $('#form_change_abonement').removeClass('d-none') 
-
+            var abonementData = $(this).serialize();
+            $.ajax({
+                type: 'GET',
+                url: '/abonements/' + id,
+                data: abonementData,
+                success: function(response) {
+                    document.getElementById("upd_abonement_id").value = id;
+                    document.getElementById("upd_abonement_type").value = response.abonement_type;
+                    document.getElementById("upd_opened").value  = response.opened;
+                    document.getElementById("upd_expires").value  = response.expires;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
 
     </script>

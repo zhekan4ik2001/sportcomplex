@@ -140,11 +140,17 @@ class Abonement_Type(models.Model):
         max_length=64, blank=False,
         verbose_name=_('Abonement type')
     )
+    duration_in_days = models.IntegerField(
+        blank=False,
+        null=False,
+        verbose_name=_('Duration in days')
+    )
     class Meta:
         verbose_name = _('abonement type')
         verbose_name_plural = _('abonement types')
     def __str__(self):
         return self.abonement_type
+
 
 class Abonement(models.Model):
     abonement_id = models.AutoField(
@@ -167,10 +173,10 @@ class Abonement(models.Model):
         verbose_name = _('abonement')
         verbose_name_plural = _('abonements')
     def __str__(self):
-        return "Id=" + self.abonement_id + \
-        _("type=") + self.abonement_type + \
-        _("opened=") + self.opened + \
-        _("expires=") + self.expires + "."
+        return "(id=" + str(self.abonement_id) + ") " + \
+        self.abonement_type.abonement_type + \
+        _("opened=") + self.opened.strftime('%Y-%m-%d') + \
+        _("expires=") + self.expires.strftime('%Y-%m-%d') + "."
 
 
 class Training_Type(models.Model):
@@ -179,7 +185,9 @@ class Training_Type(models.Model):
         verbose_name='id'
     )
     training_type = models.CharField(
-        max_length=64, blank=False,
+        max_length=64, 
+        blank=False,
+        null=False,
         verbose_name=_('Training type')
     )
     class Meta:
