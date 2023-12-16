@@ -27,7 +27,7 @@ urlpatterns = [
     re_path(r'^password_reset_done/', 
         auth_views.PasswordResetDoneView.as_view(template_name="registration/password_reset_done.html")
         ),
-    re_path(r'^schedule/?$', login_required(views.ScheduleView.as_view()),
+    re_path(r'^schedule/?$', login_required(views.schedule_page),
         name='schedule'),
     re_path(r'^schedule/(?P<training_id>[0-9]+)$', views.schedule_get,
         name='schedule_get'),

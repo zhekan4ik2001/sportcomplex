@@ -169,6 +169,14 @@ class Abonement(models.Model):
         auto_now=False, auto_now_add=False, blank=False,
         verbose_name=_('Expires')
     )
+    client = models.ForeignKey(
+        to='CustomUser', 
+        related_name='client',
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        verbose_name=_('Client')
+    )
     class Meta:
         verbose_name = _('abonement')
         verbose_name_plural = _('abonements')
@@ -222,7 +230,7 @@ class Training(models.Model):
         to='CustomUser', 
         related_name='clients',
         blank=False,
-        verbose_name=_('Client')
+        verbose_name=_('Clients')
     )
     @property
     def full_name(self):
@@ -237,7 +245,7 @@ class Training(models.Model):
     
     @property
     def training_leader_name(self):
-        return self.training_leader.get_full_name
+        return self.training_leader.full_name
 
     class Meta:
         verbose_name = _('training')

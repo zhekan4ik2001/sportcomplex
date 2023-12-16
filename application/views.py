@@ -11,7 +11,7 @@ from .forms import *
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from rest_framework import permissions, viewsets
-from .decorators import has_permission
+from .decorators import has_permission, has_one_permission
 from django.http import JsonResponse
 from django.contrib.auth.models import Group
 from datetime import datetime, timedelta
@@ -53,40 +53,31 @@ class TrainingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class ScheduleView(TemplateView):
-    form_class = TrainingSessionForm
-    template_name="application/schedule.html"
-    
+def is_in_group(user, group_name):
+    return user.groups.filter(name=group_name).exists()
 
-    def is_in_group(self, user, group_name):
-        return user.groups.filter(name=group_name).exists() 
-
-    def get(self, request):
-        #print(training_serializer.data)
-        current_user = request.user
-        if (self.is_in_group(current_user, 'trainer')):
+@login_required
+@has_one_permission('trainer', 'client')
+def schedule_page(request):
+    #print(training_serializer.data)
+    current_user = request.user
+    if (request.method == 'GET'):
+        if (is_in_group(current_user, 'trainer')):
             training_sessions = Training.objects.filter(training_leader__in = [current_user.user_id])
             training_serializer = TrainingSerializer(training_sessions, many=True)
             add_form = TrainingSessionForm(request.POST)
             add_form.setPrefix("add_")
             upd_form = TrainingSessionForm()
             upd_form.setPrefix("upd_")
-            return render(request, self.template_name, {'training_serializer': training_serializer.data,
+            return render(request, "application/schedule.html", {'training_serializer': training_serializer.data,
                                                             'add_form': add_form,
                                                             'upd_form': upd_form})
-        elif (self.is_in_group(current_user, 'client')):
+        elif (is_in_group(current_user, 'client')):
             training_sessions = Training.objects.filter(clients__in = [current_user.user_id])
             #print(Training.objects.filter(clients__in = [4]), current_user.user_id)
             training_serializer = TrainingSerializer(training_sessions, many=True)
-            return render(request, self.template_name, {'training_serializer': training_serializer.data})
-        else:
-            return redirect('application:index')
-    
-    
-
-    def post(self, request):
-        if (not self.is_in_group(request.user, 'trainer')):
-            return redirect('application:index')
+            return render(request, "application/schedule.html", {'training_serializer': training_serializer.data})
+    elif (request.method == 'POST'):
         temp_data = TrainingSessionForm(request.POST)
         if temp_data.is_valid():
             #print(temp_data.fields)
@@ -98,9 +89,7 @@ class ScheduleView(TemplateView):
                 temp_data.save_m2m()
                 return redirect('application:schedule')
             else:
-                context = self.get_context_data(form=temp_data)
-                context.update({"error": "No clients defined."})
-                return self.render_to_response(context)
+                redirect('application:schedule')
         else:
             return redirect('application:schedule')
     
@@ -110,8 +99,6 @@ class ScheduleView(TemplateView):
 @has_permission('trainer')
 def schedule_delete(request):
     id = request.POST.get('training_id')
-    if (not request.user.groups.filter(name='trainer').exists()):
-        return ('application:index')
     schedule_record = get_object_or_404(Training, pk=id)
     context = {'schedule_record': schedule_record}    
     output = schedule_record.delete()
@@ -305,7 +292,8 @@ def abonement_get(request, abonement_id):
         'abonement_id': abonement_item.abonement_id,
         'abonement_type': abonement_item.abonement_type.abonement_type_id,
         'opened': abonement_item.opened,
-        'expires': abonement_item.expires
+        'expires': abonement_item.expires,
+        'client': abonement_item.client.user_id
     }
     return JsonResponse(data)
 

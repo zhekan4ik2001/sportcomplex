@@ -201,8 +201,8 @@ class ClientForm(forms.ModelForm):
             self.fields['password'].widget.attrs['required'] = True
     
     def setPrefix(self, id_prefix):
-        if (id_prefix and id_prefix != ''):
-            self.id_prefix = id_prefix
+        if (id_prefix and str(id_prefix) != ''):
+            self.id_prefix = str(id_prefix)
             self.fields['username'].widget.attrs['id'] = self.id_prefix + 'username'
             self.fields['user_gender'].widget.attrs['id'] = self.id_prefix + 'user_gender'
             self.fields['user_first_name'].widget.attrs['id'] = self.id_prefix + 'user_first_name'
@@ -253,6 +253,17 @@ class AbonementForm(forms.ModelForm):
         label=_('Opened')
     )
 
+    client = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(groups__name='client'),
+        required=True,
+        label=_('Client'),
+        widget=forms.RadioSelect(attrs={
+            'class': 'form-check',
+            'id': 'client'
+            }
+        )
+    )
+
     def __init__(self, edition=False, *args, **kwargs):
         super(AbonementForm, self).__init__(*args, **kwargs)
         if (edition):
@@ -263,12 +274,13 @@ class AbonementForm(forms.ModelForm):
             self.fields['expires'].widget.attrs['required'] = False
     
     def setPrefix(self, id_prefix):
-        if (id_prefix and id_prefix != ''):
-            self.id_prefix = id_prefix
+        if (id_prefix and str(id_prefix) != ''):
+            self.id_prefix = str(id_prefix)
             self.fields['abonement_type'].widget.attrs['id'] = self.id_prefix + 'abonement_type'
             self.fields['opened'].widget.attrs['id'] = self.id_prefix + 'opened'
             self.fields['expires'].widget.attrs['id'] = self.id_prefix + 'expires'
+            self.fields['client'].widget.attrs['id'] = self.id_prefix + 'client'
 
     class Meta:
         model = Abonement
-        fields = ('abonement_type', 'opened', 'expires')
+        fields = ('abonement_type', 'opened', 'expires', 'client')

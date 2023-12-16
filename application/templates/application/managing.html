@@ -65,6 +65,7 @@ footer{
                 <th>#</th>
                 <th>{% translate "Type" %}</th>
                 <th>{% translate "Period" %}</th>
+                <th>{% translate "Owner id" %}</th>
                 <th>{% translate "Action" %}</th>
             </tr>
         </thead>
@@ -74,6 +75,7 @@ footer{
                 <td>{{abonement_item.abonement_id}}</td>
                 <td>{{abonement_item.abonement_type}}</td>
                 <td>{{abonement_item.opened|date:'Y-m-d'}} - {{ abonement_item.expires|date:'Y-m-d' }}</td>
+                <td>{{abonement_item.client.user_id }}</td>
                 <td>
                     <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeAbonement({{abonement_item.abonement_id}})">
                         {% translate "Change" %}
@@ -234,6 +236,13 @@ footer{
                         <label for="{{ add_abonement_form.opened.id_for_label }}">{% translate "Opened:" %}</label>
                         {{ add_abonement_form.opened }}
                     </div>
+                    <div class="overflow-visible">
+                        {% if add_abonement_form.client.errors %}
+                            {{ add_abonement_form.client.errors }}
+                        {% endif %}
+                        <label for="{{ add_abonement_form.client.id_for_label }}">{% translate "Client:" %}</label>
+                        {{ add_abonement_form.client }}
+                    </div>
                     
                     <button type="submit" class="btn btn-success" name="add_abonement">{% translate "Add" %}</button>
                 </form>
@@ -264,6 +273,13 @@ footer{
                         <label for="{{ upd_abonement_form.expires.id_for_label }}">{% translate "Expires:" %}</label>
                         {{ upd_abonement_form.expires }}
                     </div>
+                    <div class="overflow-visible">
+                        {% if upd_abonement_form.client.errors %}
+                            {{ upd_abonement_form.client.errors }}
+                        {% endif %}
+                        <label for="{{ upd_abonement_form.client.id_for_label }}">{% translate "Client:" %}</label>
+                        {{ upd_abonement_form.client }}
+                    </div>
                     <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
                     <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
                 </form>
@@ -276,7 +292,7 @@ footer{
     </div>
   </div>
 
-{% endif %}
+
     {% load static %}
     <script>
 
@@ -361,6 +377,16 @@ footer{
                 url: '/abonements/' + id,
                 data: abonementData,
                 success: function(response) {
+                    let checkboxes = document.getElementById("upd_client").getElementsByTagName('input')
+                    console.log(response);
+                    console.log(checkboxes);
+                    client = response.client;
+                    for (let item of checkboxes) {
+                        if (client == item.value) {
+                            item.checked = true;
+                            break;
+                        }
+                    }
                     document.getElementById("upd_abonement_id").value = id;
                     document.getElementById("upd_abonement_type").value = response.abonement_type;
                     document.getElementById("upd_opened").value  = response.opened;
@@ -375,4 +401,5 @@ footer{
     </script>
     <script src="{% url 'javascript-catalog' %}"></script>
     <script src="{% static 'js/basic.js' %}"></script>
+{% endif %}
 {% endblock %}
