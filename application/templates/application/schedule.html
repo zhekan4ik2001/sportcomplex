@@ -11,7 +11,7 @@ footer{
 }
 </style>
 <div class="row d-flex justify-content-center">
-    {% if user.is_authenticated and request.user|has_group:"trainer" %}
+    {% if user.is_authenticated and request.user|has_any_group:"trainer,admin" %}
     <div class="card m-3 w-25">
             <form method="post">
                 {% csrf_token %}
@@ -67,7 +67,7 @@ footer{
     </div>
 </div>
 
-{% if user.is_authenticated and request.user|has_group:"trainer" %}
+{% if user.is_authenticated and request.user|has_any_group:"trainer,admin" %}
   <!-- Модальное окно -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -170,7 +170,7 @@ footer{
         displayCalendar(year, month+1, "month+1");
 
     </script>
-    {% if user.is_authenticated and request.user|has_group:"trainer" %}
+    {% if user.is_authenticated and request.user|has_any_group:"trainer,admin" %}
     <script>
         function deleteTraining(id) {
             fetch('/schedule/' + id,  {

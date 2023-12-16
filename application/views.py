@@ -57,11 +57,21 @@ def is_in_group(user, group_name):
     return user.groups.filter(name=group_name).exists()
 
 @login_required
-@has_one_permission('trainer', 'client')
+@has_one_permission('admin', 'trainer', 'client')
 def schedule_page(request):
     #print(training_serializer.data)
     current_user = request.user
     if (request.method == 'GET'):
+        if (is_in_group(current_user, 'admin')):
+            training_sessions = Training.objects.all()
+            training_serializer = TrainingSerializer(training_sessions, many=True)
+            add_form = TrainingSessionForm(request.POST)
+            add_form.setPrefix("add_")
+            upd_form = TrainingSessionForm()
+            upd_form.setPrefix("upd_")
+            return render(request, "application/schedule.html", {'training_serializer': training_serializer.data,
+                                                            'add_form': add_form,
+                                                            'upd_form': upd_form})
         if (is_in_group(current_user, 'trainer')):
             training_sessions = Training.objects.filter(training_leader__in = [current_user.user_id])
             training_serializer = TrainingSerializer(training_sessions, many=True)
@@ -96,7 +106,7 @@ def schedule_page(request):
 
 
 @login_required
-@has_permission('trainer')
+@has_one_permission('admin', 'trainer')
 def schedule_delete(request):
     id = request.POST.get('training_id')
     schedule_record = get_object_or_404(Training, pk=id)
@@ -107,34 +117,30 @@ def schedule_delete(request):
     return redirect('application:schedule')
 
 @login_required
-@has_permission('trainer')
+@has_one_permission('admin', 'trainer')
 def schedule_get(request, training_id):
     current_user = request.user
-    if (current_user.groups.filter(name='trainer').exists() or
-            current_user.groups.filter(name='client').exists()):
-        #training_id = request.GET.get('training_id')
-        training = Training.objects.get(training_id=training_id)
-        cl = training.clients.all()
-        print(cl)
-        clients = list()
-        for i in cl:
-            clients.append(str(i.user_id))
-        data = {
-            'training_id': training.training_id,
-            'training_date': training.training_date,
-            'training_type': training.training_type.training_type_id,
-            'clients': clients
-        }
-        return JsonResponse(data)
-    else:
-        return redirect('application:index')
+    #training_id = request.GET.get('training_id')
+    training = Training.objects.get(training_id=training_id)
+    cl = training.clients.all()
+    print(cl)
+    clients = list()
+    for i in cl:
+        clients.append(str(i.user_id))
+    data = {
+        'training_id': training.training_id,
+        'training_date': training.training_date,
+        'training_type': training.training_type.training_type_id,
+        'clients': clients
+    }
+    return JsonResponse(data)
 
 
 @login_required
-@has_permission('trainer')
+@has_one_permission('admin', 'trainer')
 def schedule_update(request):
     if request.method == 'POST':
-        print(request.__dict__)
+        #print(request.__dict__)
         instance = get_object_or_404(Training, training_id=request.POST.get('training_id'))
         instance_id = instance.training_leader_id
         temp_data = TrainingSessionForm(request.POST, instance=instance)
@@ -180,7 +186,6 @@ def managing(request):
                                                             'add_abonement_form': add_abonement_form,
                                                             'upd_abonement_form': upd_abonement_form})
     elif (request.method == 'POST'):
-        print(request.POST)
         if (request.POST.__contains__('add_client')):
             temp_data = ClientForm(data=request.POST)
             if temp_data.is_valid():
