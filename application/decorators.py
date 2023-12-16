@@ -17,3 +17,16 @@ def has_permission(group_name):
             return HttpResponseForbidden("You don't have permission to do that.")
         return _wrapped_view
     return decorator
+
+def has_one_permission(*groups_args):
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            if request.user.is_authenticated:
+                user_group = get_user_group(request.user)
+                groups = list(groups_args)
+                if (user_group and user_group.filter(name__in=groups).exists()):
+                    return view_func(request, *args, **kwargs)
+            return HttpResponseForbidden("You don't have permission to do that.")
+        return _wrapped_view
+    return decorator

@@ -27,14 +27,29 @@ urlpatterns = [
     re_path(r'^password_reset_done/', 
         auth_views.PasswordResetDoneView.as_view(template_name="registration/password_reset_done.html")
         ),
-    re_path(r'^schedule/$', login_required(views.ScheduleView.as_view()),
+    re_path(r'^schedule/?$', login_required(views.schedule_page),
         name='schedule'),
     re_path(r'^schedule/(?P<training_id>[0-9]+)$', views.schedule_get,
-        name='schedule'),
-    re_path(r'^schedule/delete$', views.schedule_delete,
+        name='schedule_get'),
+    re_path(r'^schedule/delete$', login_required(views.schedule_delete),
         name='schedule_delete'),
-    re_path(r'^schedule/update$', views.schedule_update,
+    re_path(r'^schedule/update$', login_required(views.schedule_update),
         name='schedule_update'),
-    re_path(r'^accounts/$', login_required(views.AccountsView.as_view()),
-        name='accounts')
+    
+    re_path(r'^managing/?$', login_required(views.managing),
+        name='managing'),
+    
+    re_path(r'^accounts/(?P<user_id>[0-9]+)$', login_required(views.account_get),
+        name='account_get'),
+    re_path(r'^accounts/delete$', login_required(views.account_delete),
+        name='account_delete'),
+    re_path(r'^accounts/update$', login_required(views.account_update),
+        name='account_update'),
+    
+    re_path(r'^abonements/(?P<abonement_id>[0-9]+)$', login_required(views.abonement_get),
+        name='abonement_get'),
+    re_path(r'^abonements/delete$', login_required(views.abonement_delete),
+        name='abonement_delete'),
+    re_path(r'^abonements/update$', login_required(views.abonement_update),
+        name='abonement_update'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

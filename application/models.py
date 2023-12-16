@@ -85,7 +85,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = _('user')
         verbose_name_plural = _('users')
     
-    def get_full_name(self):
+    @property
+    def full_name(self):
         full_name = '%s %s' % (self.user_last_name, self.user_first_name)
         if (self.user_patronymic) :
             full_name += ' '+self.user_patronymic
@@ -110,7 +111,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return cls.EMAIL_FIELD
         except AttributeError:
             return "user_email"
-    def get_full_info(self):
+    
+    @property
+    def basic_info(self):
         temp_patr = '' if self.user_patronymic is None else self.user_patronymic
         return "id=" + str(self.user_id) + ";\n" + \
             _("username=") + self.username + ";\n" + \
@@ -137,11 +140,17 @@ class Abonement_Type(models.Model):
         max_length=64, blank=False,
         verbose_name=_('Abonement type')
     )
+    duration_in_days = models.IntegerField(
+        blank=False,
+        null=False,
+        verbose_name=_('Duration in days')
+    )
     class Meta:
         verbose_name = _('abonement type')
         verbose_name_plural = _('abonement types')
     def __str__(self):
         return self.abonement_type
+
 
 class Abonement(models.Model):
     abonement_id = models.AutoField(
@@ -160,14 +169,22 @@ class Abonement(models.Model):
         auto_now=False, auto_now_add=False, blank=False,
         verbose_name=_('Expires')
     )
+    client = models.ForeignKey(
+        to='CustomUser', 
+        related_name='client',
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        verbose_name=_('Client')
+    )
     class Meta:
         verbose_name = _('abonement')
         verbose_name_plural = _('abonements')
     def __str__(self):
-        return "Id=" + self.abonement_id + \
-        _("type=") + self.abonement_type + \
-        _("opened=") + self.opened + \
-        _("expires=") + self.expires + "."
+        return "(id=" + str(self.abonement_id) + ") " + \
+        self.abonement_type.abonement_type + \
+        _("opened=") + self.opened.strftime('%Y-%m-%d') + \
+        _("expires=") + self.expires.strftime('%Y-%m-%d') + "."
 
 
 class Training_Type(models.Model):
@@ -176,7 +193,9 @@ class Training_Type(models.Model):
         verbose_name='id'
     )
     training_type = models.CharField(
-        max_length=64, blank=False,
+        max_length=64, 
+        blank=False,
+        null=False,
         verbose_name=_('Training type')
     )
     class Meta:
@@ -211,7 +230,7 @@ class Training(models.Model):
         to='CustomUser', 
         related_name='clients',
         blank=False,
-        verbose_name=_('Client')
+        verbose_name=_('Clients')
     )
     @property
     def full_name(self):
@@ -226,7 +245,7 @@ class Training(models.Model):
     
     @property
     def training_leader_name(self):
-        return self.training_leader.get_full_name
+        return self.training_leader.full_name
 
     class Meta:
         verbose_name = _('training')
