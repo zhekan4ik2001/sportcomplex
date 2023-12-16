@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-16 17:58+0300\n"
+"POT-Creation-Date: 2023-12-16 21:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,6 +30,7 @@ msgid "Personal info"
 msgstr "Персональная информация"
 
 #: .\application\admin.py:65 .\application\forms.py:170
+#: .\application\models.py:233
 msgid "Clients"
 msgstr "Клиенты"
 
@@ -57,28 +58,65 @@ msgstr "Введите эл. почту, связанную с вашим акк
 msgid "E-mail is incorrect! Check format."
 msgstr "Эл. почта введена неверно! Проверьте формат ввода."
 
-#: .\application\forms.py:145 .\application\models.py:191
-#: .\application\models.py:208
+#: .\application\forms.py:145 .\application\models.py:199
+#: .\application\models.py:216
 msgid "Training type"
 msgstr "Тип тренировки"
 
-#: .\application\forms.py:155 .\application\models.py:212
+#: .\application\forms.py:155 .\application\models.py:220
 msgid "Training date"
 msgstr "Дата тренировки"
 
-#: .\application\forms.py:165 .\application\models.py:219
+#: .\application\forms.py:165 .\application\models.py:227
 msgid "Training leader"
 msgstr "Тренер"
 
-#: .\application\forms.py:231
+#: .\application\forms.py:199 .\application\forms.py:208
+#: .\application\models.py:31
+msgid "Username"
+msgstr "логин"
+
+#: .\application\forms.py:218
+#: .\application\templates\application\managing.html:24
+#: .\application\templates\application\profile.html:45
+msgid "Gender"
+msgstr "Пол пользователя"
+
+#: .\application\forms.py:227 .\application\models.py:42
+msgid "First name"
+msgstr "Имя"
+
+#: .\application\forms.py:236 .\application\models.py:46
+msgid "Last name"
+msgstr "Фамилия"
+
+#: .\application\forms.py:245 .\application\models.py:50
+msgid "Patronymic"
+msgstr "Отчество"
+
+#: .\application\forms.py:254 .\application\models.py:54
+#: .\application\templates\application\profile.html:63
+msgid "E-mail"
+msgstr "Эл. почта"
+
+#: .\application\forms.py:263 .\application\models.py:60
+#: .\application\templates\application\profile.html:72
+msgid "Phone number"
+msgstr "Номер телефона"
+
+#: .\application\forms.py:303
 #: .\application\templates\application\managing.html:66
 msgid "Type"
 msgstr "Тип"
 
-#: .\application\forms.py:242 .\application\forms.py:253
+#: .\application\forms.py:314 .\application\forms.py:325
 #: .\application\models.py:166
 msgid "Opened"
 msgstr "Открыт"
+
+#: .\application\forms.py:331 .\application\models.py:178
+msgid "Client"
+msgstr "Клиент"
 
 #: .\application\models.py:16
 msgid "gender"
@@ -98,41 +136,15 @@ msgstr ""
 msgid "A user with that username already exists."
 msgstr "Пользователь с таким логином уже существует."
 
-#: .\application\models.py:31
-msgid "Username"
-msgstr "логин"
-
 #: .\application\models.py:38
 msgid "Human Gender"
 msgstr "Пол человека"
-
-#: .\application\models.py:42
-msgid "First name"
-msgstr "Имя"
-
-#: .\application\models.py:46
-msgid "Last name"
-msgstr "Фамилия"
-
-#: .\application\models.py:50
-msgid "Patronymic"
-msgstr "Отчество"
-
-#: .\application\models.py:54
-#: .\application\templates\application\profile.html:63
-msgid "E-mail"
-msgstr "Эл. почта"
 
 #: .\application\models.py:57
 msgid "Phone number must match the format: '+999999999'. Max 15 digits."
 msgstr ""
 "Номер телефона должен соответствовать формату: '+999999999'. Максимум 15 "
 "цифр."
-
-#: .\application\models.py:60
-#: .\application\templates\application\profile.html:72
-msgid "Phone number"
-msgstr "Номер телефона"
 
 #: .\application\models.py:64
 msgid "Avatar"
@@ -191,41 +203,94 @@ msgstr "Id типа абонемента"
 msgid "Expires"
 msgstr "Истекает"
 
-#: .\application\models.py:173
+#: .\application\models.py:181
 msgid "abonement"
 msgstr "Управление"
 
-#: .\application\models.py:174
+#: .\application\models.py:182
 msgid "abonements"
 msgstr "Управление"
 
-#: .\application\models.py:178
+#: .\application\models.py:186
 msgid "opened="
 msgstr "открыт="
 
-#: .\application\models.py:179
+#: .\application\models.py:187
 msgid "expires="
 msgstr "истекает="
 
-#: .\application\models.py:194
+#: .\application\models.py:202
 msgid "training type"
 msgstr "Тип тренировки"
 
-#: .\application\models.py:195
+#: .\application\models.py:203
 msgid "training types"
 msgstr "Типы тренировки"
 
-#: .\application\models.py:225
-msgid "Client"
-msgstr "Клиент"
-
-#: .\application\models.py:243
+#: .\application\models.py:251
 msgid "training"
 msgstr "Тренировка"
 
-#: .\application\models.py:244
+#: .\application\models.py:252
 msgid "trainings"
 msgstr "Тренировки"
+
+#: .\application\templates\application\mainpage.html:29
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: .\application\templates\application\mainpage.html:30
+msgid ""
+"Welcome to our sports complex! We are glad to see you here and are ready to "
+"offer a wide a range of opportunities for sports and maintaining a healthy "
+"lifestyle."
+msgstr ""
+"Добро пожаловать в наш спортивный комплекс! Мы рады видеть вас здесь "
+"и готовы предложить широкий спектр возможностей для занятий спортом и поддержания "
+"здорового образа жизни."
+
+#: .\application\templates\application\mainpage.html:32
+msgid ""
+"In our complex you will find modern gyms equipped with everything you need "
+"equipment for fitness, yoga, Pilates, aerobics and other types of physical "
+"exercise activity. We also have a swimming pool where you can practice "
+"swimming and water aerobics."
+msgstr ""
+"В нашем комплексе вы найдете современные спортивные залы, оснащенные "
+"всем необходимым оборудованием для занятий фитнесом, йогой, пилатесом, "
+"аэробикой и другими видами физической  активности. Также у нас есть бассейн, "
+"где вы сможете заниматься плаванием и аквааэробикой."
+
+#: .\application\templates\application\mainpage.html:47
+msgid "Services"
+msgstr "Услуги"
+
+#: .\application\templates\application\mainpage.html:48
+msgid ""
+"For fans of team sports, we have outdoor fields for playing football, "
+"volleyball and basketball. We also provide training in hand-to-hand combat, "
+"tennis, table tennis and other sports."
+msgstr ""
+"Для любителей командных видов спорта у нас есть открытые площадки для игры в "
+"футбол, волейбол и баскетбол. Также у нас проводятся тренировки по рукопашному "
+"бою, теннису, настольному теннису и другим видам спорта."
+
+#: .\application\templates\application\mainpage.html:51
+msgid ""
+"We are also proud of our team of highly qualified coaches who will provide "
+"you with professional assistance and support in achieving your sporting "
+"goals."
+msgstr ""
+"Мы также гордимся своей командой высококвалифицированных тренеров, которые "
+"окажут вам профессиональную помощь и поддержку в достижении ваших спортивных целей."
+
+#: .\application\templates\application\mainpage.html:53
+msgid ""
+"We invite you to visit our sports complex and begin your journey to health "
+"and fitness with us!"
+msgstr ""
+"Приглашаем вас посетить наш спортивный комплекс и начать свой путь к здоровью "
+"и физической форме вместе с нами!"
 
 #: .\application\templates\application\managing.html:4
 msgid "Accounts of clients"
@@ -236,13 +301,41 @@ msgstr "Аккаунты клиентов"
 msgid "New"
 msgstr "Новый"
 
+#: .\application\templates\application\managing.html:22
+#: .\application\templates\base_template.html:51
+msgid "Login"
+msgstr "Вход"
+
+#: .\application\templates\application\managing.html:23
+#, fuzzy
+#| msgid "Name="
+msgid "Name"
+msgstr "Имя="
+
+#: .\application\templates\application\managing.html:25
+#, fuzzy
+#| msgid "E-mail"
+msgid "Email"
+msgstr "Эл. почта"
+
+#: .\application\templates\application\managing.html:26
+#, fuzzy
+#| msgid "phone="
+msgid "Phone"
+msgstr "телефон="
+
+#: .\application\templates\application\managing.html:27
+#: .\application\templates\application\managing.html:69
+msgid "Action"
+msgstr "Действие"
+
 #: .\application\templates\application\managing.html:45
-#: .\application\templates\application\managing.html:79
+#: .\application\templates\application\managing.html:81
 msgid "Change"
 msgstr "Изменить"
 
 #: .\application\templates\application\managing.html:51
-#: .\application\templates\application\managing.html:85
+#: .\application\templates\application\managing.html:87
 #: .\application\templates\application\schedule.html:208
 msgid "Delete"
 msgstr "Удалить"
@@ -252,94 +345,100 @@ msgid "Period"
 msgstr "Период"
 
 #: .\application\templates\application\managing.html:68
-msgid "Action"
-msgstr "Действие"
+msgid "Owner id"
+msgstr "id владельца"
 
-#: .\application\templates\application\managing.html:98
+#: .\application\templates\application\managing.html:100
 #: .\application\templates\application\schedule.html:76
 msgid "Modal window header"
 msgstr "Заголовок модального окна"
 
-#: .\application\templates\application\managing.html:99
-#: .\application\templates\application\managing.html:273
+#: .\application\templates\application\managing.html:101
+#: .\application\templates\application\managing.html:290
 #: .\application\templates\application\schedule.html:77
 #: .\application\templates\application\schedule.html:113
 msgid "Close"
 msgstr "Закрыть"
 
-#: .\application\templates\application\managing.html:108
-#: .\application\templates\application\managing.html:170
+#: .\application\templates\application\managing.html:110
+#: .\application\templates\application\managing.html:172
 msgid "Username:"
 msgstr "Логин:"
 
-#: .\application\templates\application\managing.html:115
+#: .\application\templates\application\managing.html:117
 msgid "Password:"
 msgstr "Пароль:"
 
-#: .\application\templates\application\managing.html:122
-#: .\application\templates\application\managing.html:177
-#: .\application\templates\application\managing.html:250
-#: .\application\templates\application\managing.html:257
+#: .\application\templates\application\managing.html:124
+#: .\application\templates\application\managing.html:179
+#: .\application\templates\application\managing.html:259
+#: .\application\templates\application\managing.html:266
 msgid "Gender:"
 msgstr "Пол пользователя:"
 
-#: .\application\templates\application\managing.html:129
-#: .\application\templates\application\managing.html:184
+#: .\application\templates\application\managing.html:131
+#: .\application\templates\application\managing.html:186
 msgid "Last name:"
 msgstr "Фамилия:"
 
-#: .\application\templates\application\managing.html:136
-#: .\application\templates\application\managing.html:191
+#: .\application\templates\application\managing.html:138
+#: .\application\templates\application\managing.html:193
 msgid "First name:"
 msgstr "Имя:"
 
-#: .\application\templates\application\managing.html:143
-#: .\application\templates\application\managing.html:198
+#: .\application\templates\application\managing.html:145
+#: .\application\templates\application\managing.html:200
 msgid "Patronymic:"
 msgstr "Отчество:"
 
-#: .\application\templates\application\managing.html:150
-#: .\application\templates\application\managing.html:205
+#: .\application\templates\application\managing.html:152
+#: .\application\templates\application\managing.html:207
+#: .\application\templates\base_template.html:70
 msgid "E-mail:"
 msgstr "Эл. почта:"
 
-#: .\application\templates\application\managing.html:157
-#: .\application\templates\application\managing.html:212
+#: .\application\templates\application\managing.html:159
+#: .\application\templates\application\managing.html:214
 msgid "Phone number:"
 msgstr "Номер телефона:"
 
-#: .\application\templates\application\managing.html:160
-#: .\application\templates\application\managing.html:238
+#: .\application\templates\application\managing.html:162
+#: .\application\templates\application\managing.html:247
 msgid "Add"
 msgstr "Добавить"
 
-#: .\application\templates\application\managing.html:215
-#: .\application\templates\application\managing.html:267
+#: .\application\templates\application\managing.html:217
+#: .\application\templates\application\managing.html:284
 #: .\application\templates\application\schedule.html:107
 #: .\application\templates\application\schedule.html:210
 msgid "Update"
 msgstr "Изменить"
 
-#: .\application\templates\application\managing.html:216
-#: .\application\templates\application\managing.html:268
+#: .\application\templates\application\managing.html:218
+#: .\application\templates\application\managing.html:285
 #: .\application\templates\application\schedule.html:108
 msgid "Cancel"
 msgstr "Отмена"
 
-#: .\application\templates\application\managing.html:227
+#: .\application\templates\application\managing.html:229
 msgid "Type:"
 msgstr "Тип:"
 
-#: .\application\templates\application\managing.html:234
+#: .\application\templates\application\managing.html:236
 msgid "Opened:"
 msgstr "Открыт:"
 
-#: .\application\templates\application\managing.html:264
+#: .\application\templates\application\managing.html:243
+#: .\application\templates\application\managing.html:280
+msgid "Client:"
+msgstr "Клиенты:"
+
+#: .\application\templates\application\managing.html:273
 msgid "Expires:"
 msgstr "Истекает:"
 
 #: .\application\templates\application\profile.html:12
-#: .\application\templates\base_template.html:39
+#: .\application\templates\base_template.html:44
 msgid "Profile"
 msgstr "Профиль"
 
@@ -347,21 +446,17 @@ msgstr "Профиль"
 msgid "Full name"
 msgstr "ФИО"
 
-#: .\application\templates\application\profile.html:45
-msgid "Gender"
-msgstr "Пол пользователя"
-
 #: .\application\templates\application\profile.html:54
 msgid "Status"
 msgstr "Статус"
 
 #: .\application\templates\application\profile.html:94
+#: .\application\templates\base_template.html:28
 msgid "Schedule"
 msgstr "Расписание"
 
 #: .\application\templates\application\profile.html:104
-#, fuzzy
-#| msgid "Management"
+#: .\application\templates\base_template.html:30
 msgid "Managing"
 msgstr "Управление"
 
@@ -396,21 +491,23 @@ msgstr "Спорт-комплекс"
 msgid "Home"
 msgstr "Главная"
 
-#: .\application\templates\base_template.html:26
-msgid "link2"
-msgstr "ссылка2"
-
-#: .\application\templates\base_template.html:27
-msgid "link3"
-msgstr "ссылка3"
-
-#: .\application\templates\base_template.html:41
+#: .\application\templates\base_template.html:46
 msgid "Sign out"
 msgstr "Выход"
 
-#: .\application\templates\base_template.html:46
-msgid "Login"
-msgstr "Вход"
+#: .\application\templates\base_template.html:64
+msgid "Телефон:"
+msgstr "Phone number"
+
+#: .\application\templates\base_template.html:67
+msgid "Address: Saint-Petersburg, Bolshaya Morkaya st., 67"
+msgstr "Адрес: г. Санкт-Петербург, Большая Морская ул., д. 67"
+
+#~ msgid "link2"
+#~ msgstr "ссылка2"
+
+#~ msgid "link3"
+#~ msgstr "ссылка3"
 
 #~ msgid "first name="
 #~ msgstr "имя="
@@ -420,9 +517,6 @@ msgstr "Вход"
 
 #~ msgid "patronymic="
 #~ msgstr "отчество="
-
-#~ msgid "phone="
-#~ msgstr "телефон="
 
 #~ msgid "email="
 #~ msgstr "эл. почта="

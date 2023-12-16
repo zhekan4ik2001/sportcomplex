@@ -25,11 +25,12 @@
               <img src='https://sportishka.com/uploads/posts/2022-11/1667586032_33-sportishka-com-p-dizain-trenazhernogo-zala-v-chastnom-dome-33.jpg' width="500" height="500">
             </div>
             <div class="col-lg-5 ml-auto p-lg-5 mt-4 mt-lg-0 aos-init" data-aos="fade-left" data-aos-delay="">
-              <h2 class="mb-3 text-black">Добро пожаловать</h2>
-              <p>Добро пожаловать в наш спортивный комплекс! Мы рады видеть вас здесь и готовы предложить широкий спектр возможностей для занятий спортом и поддержания здорового образа жизни.
-                </p>
-<p>В нашем комплексе вы найдете современные спортивные залы, оснащенные всем необходимым оборудованием для занятий фитнесом, йогой, пилатесом, аэробикой и другими видами физической активности. Также у нас есть бассейн, где вы сможете заниматься плаванием и аквааэробикой.
-  </p>
+              {% load i18n %}
+              <h2 class="mb-3 text-black">{% translate "Welcome" %}</h2>
+              <p>{% translate "Welcome to our sports complex! We are glad to see you here and are ready to offer a wide a range of opportunities for sports and maintaining a healthy lifestyle." %}
+              </p>
+              <p>{% translate "In our complex you will find modern gyms equipped with everything you need equipment for fitness, yoga, Pilates, aerobics and other types of physical exercise activity. We also have a swimming pool where you can practice swimming and water aerobics." %}
+              </p>
             </div>
           </div>
         </div>
@@ -43,13 +44,14 @@
             
             <div class="col-lg-5 mr-auto p-lg-5 mt-4 mt-lg-0 order-lg-1 aos-init" data-aos="fade-right"
               data-aos-delay="">
-              <h2 class="mb-3 text-black">Услуги</h2>
-              <p>Для любителей командных видов спорта у нас есть открытые площадки для игры в футбол, волейбол и баскетбол. Также у нас проводятся тренировки по рукопашному бою, теннису, настольному теннису и другим видам спорта.</p>
+              <h2 class="mb-3 text-black">{% translate "Services" %}</h2>
+              <p>{% translate "For fans of team sports, we have outdoor fields for playing football, volleyball and basketball. We also provide training in hand-to-hand combat, tennis, table tennis and other sports." %}
+              </p>
 
-              <p>Мы также гордимся своей командой высококвалифицированных тренеров, которые окажут вам профессиональную помощь и поддержку в достижении ваших спортивных целей.
-</p>
-                <p>Приглашаем вас посетить наш спортивный комплекс и начать свой путь к здоровью и физической форме вместе с нами!
-</p>
+              <p>{% translate "We are also proud of our team of highly qualified coaches who will provide you with professional assistance and support in achieving your sporting goals." %}
+              </p>
+                <p>{% translate "We invite you to visit our sports complex and begin your journey to health and fitness with us!" %}
+              </p>
             </div>
           </div>
         </div>
