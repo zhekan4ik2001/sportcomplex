@@ -169,7 +169,6 @@ class TrainingSessionForm(forms.ModelForm):
         required=True,
         label=_('Clients'),
         widget=forms.CheckboxSelectMultiple(attrs={
-            'class': 'form-check',
             'id': 'clients'
             }
         )
