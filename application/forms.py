@@ -140,7 +140,7 @@ class TrainingSessionForm(forms.ModelForm):
         widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'training_type',
-            'required': 'True'
+            'required': True
         }),
         label=_('Training type'))
     training_date = forms.DateTimeField(
@@ -149,7 +149,7 @@ class TrainingSessionForm(forms.ModelForm):
             'class': 'form-control',
             'id': 'training_date',
             'type': 'datetime-local',
-            'required': 'True'
+            'required': True
         }),
         input_formats=['%Y-%m-%dT%H:%M'],
         label=_('Training date')
@@ -160,7 +160,7 @@ class TrainingSessionForm(forms.ModelForm):
         widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'training_type',
-            'required': 'False'
+            'required': True
         }),
         label=_('Training leader')
     )
@@ -190,6 +190,79 @@ class TrainingSessionForm(forms.ModelForm):
 
 class ClientForm(forms.ModelForm):
     id_prefix = ''
+    username = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'username',
+            'required': True
+        }),
+        label=_('Username')
+    )
+    password = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'password',
+            'required': True
+        }),
+        label=_('Username')
+    )
+    user_gender = forms.ModelChoiceField(
+        queryset=Human_Gender.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'id': 'user_gender',
+            'required': True
+        }),
+        label=_('Gender')
+    )
+    user_first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'user_first_name',
+            'required': True
+        }),
+        label=_('First name')
+    )
+    user_last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'user_last_name',
+            'required': True
+        }),
+        label=_('Last name')
+    )
+    user_patronymic = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'user_patronymic',
+            'required': False
+        }),
+        label=_('Patronymic')
+    )
+    user_email = forms.EmailField(
+        required=False,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'id': 'user_email',
+            'required': False
+        }),
+        label=_('E-mail')
+    )
+    user_phone = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'user_phone',
+            'required': True
+        }),
+        label=_('Phone number')
+    )
 
     def __init__(self, edition=False, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
@@ -226,7 +299,7 @@ class AbonementForm(forms.ModelForm):
         widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'abonement_type',
-            'required': 'True'
+            'required': True
         }),
         label=_('Type')
     )
@@ -237,7 +310,7 @@ class AbonementForm(forms.ModelForm):
             'class': 'form-control',
             'id': 'opened',
             'type': 'date',
-            'required': 'True'
+            'required': True
         }),
         label=_('Opened')
     )
@@ -248,7 +321,7 @@ class AbonementForm(forms.ModelForm):
             'class': 'form-control',
             'id': 'expires',
             'type': 'date',
-            'required': 'True'
+            'required': True
         }),
         label=_('Opened')
     )
@@ -258,7 +331,6 @@ class AbonementForm(forms.ModelForm):
         required=True,
         label=_('Client'),
         widget=forms.RadioSelect(attrs={
-            'class': 'form-check',
             'id': 'client'
             }
         )
