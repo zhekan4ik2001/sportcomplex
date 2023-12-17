@@ -4,18 +4,12 @@
 <h1 style="padding-left: 15rem;">{% translate "Accounts of clients" %}</h1>
 
 {% load user_tags %}
-<style>
-footer{
-    position: fixed;
-    bottom:0;
-}
-</style>
 
 
 {% if user.is_authenticated and request.user|has_group:"admin" %}
 <div>
     <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertClient()">{% translate "New" %}</button><br>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped" id="clients">
         <thead>
             <tr>
                 <th>#</th>
@@ -41,25 +35,27 @@ footer{
             <td>{{ account_item.user_email }}</td>
             <td>{{ account_item.user_phone }}</td>
             <td>
-                <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeClient({{account_item.user_id}})">
+                <button class="btn btn-primary m-2" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeClient({{account_item.user_id}})" style="float: left;">
                     {% translate "Change" %}
                 </button>
-                <form action="/accounts/delete" method="post">
+                <form class="m-2" action="/accounts/delete" method="post" style="float: left;">
                     {% csrf_token %}
                     <input type="hidden" name="user_id" value="{{account_item.user_id}}">
                     <button class="btn btn-danger" type="submit">
                         {% translate "Delete" %}
-                    </button></td>
+                    </button>
                 </form>
+            </td>
         </tr>
             
     {% endfor %} 
     </tbody>
     </table>  
 </div>
+<hr>
 <div>
     <button class="btn btn-success" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openInsertAbonement()">{% translate "New" %}</button><br>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped" id="abonements">
         <thead>
             <tr>
                 <th>#</th>
@@ -77,16 +73,17 @@ footer{
                 <td>{{abonement_item.opened|date:'Y-m-d'}} - {{ abonement_item.expires|date:'Y-m-d' }}</td>
                 <td>{{abonement_item.client.user_id }}</td>
                 <td>
-                    <button class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeAbonement({{abonement_item.abonement_id}})">
+                    <button class="btn btn-primary m-2" data-bs-toggle='modal' data-bs-target='#exampleModal' onclick="openChangeAbonement({{abonement_item.abonement_id}})" style="float: left;">
                         {% translate "Change" %}
                     </button>
-                    <form action="/abonements/delete" method="post">
+                    <form class="m-2" action="/abonements/delete" method="post" style="float: left;">
                         {% csrf_token %}
                         <input type="hidden" name="abonement_id" value="{{abonement_item.abonement_id}}">
                         <button class="btn btn-danger" type="submit">
                             {% translate "Delete" %}
-                        </button></td>
+                        </button>
                     </form>
+                </td>
             </tr>
     {% endfor %}    
 </tbody>
@@ -159,7 +156,9 @@ footer{
                         <label for="{{ add_client_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
                         {{ add_client_form.user_phone }}
                     </div>
-                    <button type="submit" class="btn btn-success" name="add_client">{% translate "Add" %}</button>
+                    <div class="text-center m-3">
+                        <button type="submit" class="btn btn-success" name="add_client">{% translate "Add" %}</button>
+                    </div>
                 </form>
             </div>
             <div class="d-none" id="form_change_client">
@@ -214,8 +213,10 @@ footer{
                         <label for="{{ upd_client_form.user_phone.id_for_label }}">{% translate "Phone number:" %}</label>
                         {{ upd_client_form.user_phone }}
                     </div>
-                    <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
-                    <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
+                    <div class="text-center m-3">
+                        <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
+                        <button class="btn btn-danger" type="button" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                    </div>
                 </form>
             </div>
             <div class="d-none" id="form_insert_abonement">
@@ -243,8 +244,9 @@ footer{
                         <label for="{{ add_abonement_form.client.id_for_label }}">{% translate "Client:" %}</label>
                         {{ add_abonement_form.client }}
                     </div>
-                    
-                    <button type="submit" class="btn btn-success" name="add_abonement">{% translate "Add" %}</button>
+                    <div class="text-center m-3">
+                        <button type="submit" class="btn btn-success" name="add_abonement">{% translate "Add" %}</button>
+                    </div>
                 </form>
             </div>
             <div class="d-none" id="form_change_abonement">
@@ -281,8 +283,10 @@ footer{
                         {{ upd_abonement_form.client }}
                         
                     </div>
-                    <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
-                    <button class="btn btn-danger" type="button">{% translate "Cancel" %}</button>
+                    <div class="text-center m-3">
+                        <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
+                        <button class="btn btn-danger" type="button" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -402,5 +406,9 @@ footer{
     </script>
     <script src="{% url 'javascript-catalog' %}"></script>
     <script src="{% static 'js/basic.js' %}"></script>
+    <script>
+        let table2 = new DataTable('#clients', { language: {url : "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Russian.json"} });
+        let table1 = new DataTable('#abonements', { language: {url : "https://cdn.datatables.net/plug-ins/1.10.15/i18n/Russian.json"} });
+    </script>
 {% endif %}
 {% endblock %}

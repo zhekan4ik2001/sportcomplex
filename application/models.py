@@ -251,4 +251,4 @@ class Training(models.Model):
         verbose_name = _('training')
         verbose_name_plural = _('trainings')
     def __str__(self):
-        return f"{self.training_id}: {self.training_type}, {self.training_date}, {self.training_leader_name()}."
+        return f"{self.training_id}: {self.training_type}, {self.training_date}, {self.training_leader_name}."
