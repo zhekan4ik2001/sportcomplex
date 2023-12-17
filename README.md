@@ -9,7 +9,9 @@
 > 
 > [Заполнение таблиц базовой информацией](#header1_4)
 > 
-> [Запуск сервера](#header1_5)
+> [Создание сертификатов (для HTTPS)](#header1_5)
+>
+> [Запуск сервера](#header1_6)
 
 [Внесение изменений в модель](#header2)
 
@@ -40,13 +42,16 @@ virtualenv SportComplex_env
     source SportComplex_env/bin/activate
     ```
 При успешном выполении команды командная строка будет включать в начале название среды в скобочках, например `(SportComplex_env) D:\projects\5sem>`. Деактивируется среда командой `deactivate`.
-Все необходимые модули устанавливаются внутри виртуальной среды. Версия Django 4.1 работает с PostgreSQL 11, а с версии 4.2 уже необходимо иметь версию не старее 12-й.
+Перейти в проект можно командой:
 ```
-pip install django==4.1
+cd sportcomplex
 ```
+Все необходимые перечислены в requirements.txt и устанавливаются внутри виртуальной среды. Их установка: 
 ```
-pip install psycopg2
+pip install -r requirements.txt
 ```
+
+Версия Django 4.1 работает с PostgreSQL 11, а с версии 4.2 уже необходимо иметь версию не старее 12-й.
 
 <a name="header1_2"></a>
 ### База данных
@@ -70,7 +75,6 @@ GRANT ALL PRIVILEGES ON DATABASE sportcomplex_database TO sportcomplex_admin;
 ```
 Теперь нужно произвести миграцию(внесение изменений моделей в базу данных). Команды выполняются в директории проекта:
 ```
-cd sportcomplex
 python manage.py makemigrations
 python manage.py migrate
 ```
@@ -92,10 +96,35 @@ python manage.py loaddata basic_data.json
 ```
 
 <a name="header1_5"></a>
+### Создание сертификатов (для HTTPS)
+В [репозитории](https://github.com/FiloSottile/mkcert) утилиты на Гитхабе есть инструкции по установке на все операционные системы. Скачайте бинарный файл из Releases и переименуйте его в mkcert.exe.
+Дальше откройте командную строку от имени Администратора, перейдите в папку с этим файлом и выполните:
+```
+mkcert -install
+```
+Если ошибок не было, в результате в консоли будет следующее:
+Created a new local CA
+The local CA is now  installed in the system trust store!
+Note: Firefox support is not available on your platform.
+
+Далее необходимо сгенерировать сертификат для домена localhost командой:
+```
+mkcert -cert-file cert.pem -key-file key.pem localhost 127.0.0.1
+```
+В папке где находится утилита mkcert были созданы файлы `cert.pem` и `key.pem`, их нужно скопировать в папку с проектом Django на одном уровне с manage.py. 
+
+
+<a name="header1_6"></a>
 ### Запуск сервера
+Запуск HTTP:
 На Windows необходимо в Брандмауэре открыть порт 8000. После открытия порта нужно перейти в директорию проекта и применить команду запуска сервера:
 ```
 python manage.py runserver
+```
+Запуск HTTPS:
+На Windows необходимо в Брандмауэре открыть порт 443. После открытия порта нужно перейти в директорию проекта и применить команду запуска сервера:
+```
+python manage.py runsslserver --certificate cert.pem --key key.pem 127.0.0.1:443
 ```
 
 

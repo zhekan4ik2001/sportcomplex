@@ -53,7 +53,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         max_length=256, blank=True,
         verbose_name=_('E-mail')
     )
-    phone_regex = RegexValidator(regex=r'^\+?\d{9,15}$', 
+    phone_regex = RegexValidator(regex=r'^\+\d{9,15}$', 
                                  message=_("Phone number must match the format: '+999999999'. Max 15 digits."))
     user_phone = models.CharField(
         validators=[phone_regex], max_length=16, blank=False,
