@@ -152,10 +152,11 @@ footer{
                 }
                 let info = checkTraning(new Date(year, month, day))
                 if (info == "true"){
-                    calendarHtml += "<td style='cursor:pointer;' class='bg-primary text-white' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick='openTrainingWindow(new Date("+year+", "+month+", "+ --day +"))'>" + day++ + "</td>";
+                    calendarHtml += "<td style='cursor:pointer;' class='bg-primary text-white' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick='openTrainingWindow(new Date("+year+", "+month+", "+ day +"))'>" + day + "</td>";
                 } else {
-                    calendarHtml += "<td>" + day++ + "</td>";
+                    calendarHtml += "<td>" + day + "</td>";
                 }
+                day++;
                 if (day > daysInMonth) {
                     break;
                 }
