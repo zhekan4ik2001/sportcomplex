@@ -48,16 +48,16 @@ class Human_GenderSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     #basic_info = serializers.SerializerMethodField()
     #full_name = serializers.SerializerMethodField()
-    #user_gender = serializers.SerializerMethodField()
-#
+    user_gender_name = serializers.SerializerMethodField()
+
     #def get_basic_info(self, obj):
     #    return obj.basic_info
     #
     #def get_full_name(self, obj):
     #    return obj.full_name
     #
-    #def get_user_gender(self, obj):
-    #    return obj.user_gender
+    def get_user_gender_name(self, obj):
+        return obj.user_gender.gender_name
     
     class Meta:
         model = CustomUser
