@@ -1,0 +1,113 @@
+{% extends "base_template.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block bodyblock %}
+<h1 style="padding-left: 15rem;">{% translate "Profile" %}</h1>
+    <div class="row d-flex justify-content-center">
+        <div class="card m-3 w-25">
+            <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+                {% load static %}
+                {% if user.avatar %} 
+                    <img src="{{user.avatar.url}}" alt="avatar" class="rounded-circle border border-dark border-3" width="150" height="150">
+                {% else %}
+                    <img src="{% static 'images/default_avatar.jpg' %}" alt="avatar" class="rounded-circle border border-dark border-3" width="150" height="150">
+                {% endif %}
+                <div class="mt-3">
+                <h4>{{user.user_first_name}} {{user.user_last_name}}</h4>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="card m-3 w-50">
+            <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                <h6 class="mb-0">{% translate "Full name" %}</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.user_last_name}} {{user.user_first_name}} 
+                    {% if user.pantronymic %} 
+                        {{user.pantrnymic}} 
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                <h6 class="mb-0">{% translate "Gender" %}</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.user_gender}}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                <h6 class="mb-0">{% translate "Status" %}</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.groups.all.0}}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                <h6 class="mb-0">{% translate "E-mail" %}</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.user_email}}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                <h6 class="mb-0">{% translate "Phone number" %}</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.user_phone}}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                <h6 class="mb-0">{% translate "Joined" %}</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.date_joined}}
+                </div>
+            </div>
+            <hr>
+            {% load user_tags %}
+            {% if user.is_authenticated %} 
+                <div class="row">
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-9">
+                        <a class="btn bg-primary p-2 text-white" href="/schedule">{% translate "Schedule" %}</a>
+                    </div>
+                </div>
+                <hr>
+            {% endif %}
+            {% if user.is_authenticated and request.user|has_group:"admin" %} 
+                <div class="row">
+                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-9">
+                        <a class="btn bg-primary p-2 text-white" href="/managing">{% translate "Managing" %}</a>
+                    </div>
+                </div>
+                <hr>
+            {% endif %}
+            <!--<div class="row">
+                <div class="col-sm-12">
+                <a class="btn btn-info " target="__blank" >Edit</a>
+                </div>
+            </div>-->
+            </div>
+        </div>
+    </div>
+
+
+{% endblock bodyblock %}

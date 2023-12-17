@@ -3,28 +3,32 @@
     "model":"application.abonement_type",
     "pk":1,
     "fields":{
-      "abonement_type": "one-off"
+      "abonement_type": "one-off",
+      "duration_in_days": 1
     }
   },
   {
     "model":"application.abonement_type",
     "pk":2,
     "fields":{
-      "abonement_type": "month"
+      "abonement_type": "month",
+      "duration_in_days": 30
     }
   },
   {
     "model":"application.abonement_type",
     "pk":3,
     "fields":{
-      "abonement_type": "6 months"
+      "abonement_type": "6 months",
+      "duration_in_days": 180
     }
   },
   {
     "model":"application.abonement_type",
     "pk":4,
     "fields":{
-      "abonement_type": "year"
+      "abonement_type": "year",
+      "duration_in_days": 365
     }
   },
   {
@@ -60,6 +64,30 @@
     "pk":2,
     "fields":{
       "training_type": "individual"
+    }
+  },
+  {
+    "model":"auth.group",
+    "pk":1,
+    "fields":{
+      "name": "admin",
+      "permissions": [37,38,39,40,41,42,43,44,21,22,23,24]
+    }
+  },
+  {
+    "model":"auth.group",
+    "pk":2,
+    "fields":{
+      "name": "trainer",
+      "permissions": [37,38,39,40]
+    }
+  },
+  {
+    "model":"auth.group",
+    "pk":3,
+    "fields":{
+      "name": "client",
+      "permissions": [40]
     }
   }
 ]

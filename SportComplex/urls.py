@@ -17,15 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.i18n import i18n_patterns
+from rest_framework import routers
+from application.views import TrainingViewSet
+from django.views.i18n import JavaScriptCatalog
+
+router = routers.DefaultRouter()
+router.register(r'^trainings', TrainingViewSet)
 
 urlpatterns = [
-    re_path('', include('application.urls')),
-    re_path(r'accounts/', include('django.contrib.auth.urls')),
+    re_path(r'^', include('application.urls')),
+    re_path(r'^api/v1/', include(router.urls)),
 ]
 
 urlpatterns += i18n_patterns(
     re_path(r'^admin/', admin.site.urls),
-    re_path(r'accounts/', include('django.contrib.auth.urls')),
-    # If no prefix is given, use the default language
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     prefix_default_language=False
 )

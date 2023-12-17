@@ -1,0 +1,269 @@
+{% extends "base_template.html" %}
+{% block bodyblock %}
+{% load i18n %}
+<h1 style="padding-left: 15rem;">{% translate "Training Schedule" %}</h1>
+
+{% load user_tags %}
+<style>
+footer{
+    position: fixed;
+    bottom:0;
+}
+</style>
+<div class="row d-flex justify-content-center">
+    {% if user.is_authenticated and request.user|has_any_group:"trainer,admin" %}
+    <div class="card m-3 w-25">
+            <form method="post">
+                {% csrf_token %}
+                {{ add_form.non_field_errors }}
+                <div class="fieldWrapper">
+                    {{ add_form.training_type.errors }}
+                    <label for="{{ add_form.training_type.id_for_label }}">{% translate "Training type:" %}</label>
+                    {{ add_form.training_type }}
+                </div>
+                <div class="fieldWrapper">
+                    {% if add_form.training_date.errors %}
+                        {{ add_form.training_date.errors }}
+                    {% endif %}
+                    <label for="{{ add_form.training_date.id_for_label }}">{% translate "Training date:" %}</label>
+                    {{ add_form.training_date }}
+                </div>
+                <div class="overflow-visible">
+                    {% if add_form.clients.errors %}
+                        {{ add_form.clients.errors }}
+                    {% endif %}
+                    <label for="{{ add_form.clients.id_for_label }}">{% translate "Clients:" %}</label>
+                    {{ add_form.clients }}
+                </div>
+                <button type="submit" class="btn btn-primary">{% translate "Add Training Session" %}</button>
+            </form>
+        </div>
+        {% endif %}
+    <div class="card m-3 w-50">
+        <div class="d-none">
+            {% for session in training_serializer %}
+                    <div class="training"
+                         data-id="{{session.training_id}}"
+                         data-type="{{session.training_type}}"
+                         data-type_name="{{session.training_types}}"
+                         data-date="{{ session.training_date|date:'Y-m-d H:i:s' }}"
+                         data-train="{{ session.training_leader_name }}">
+                    </div>
+            {% endfor %}    
+        </div>
+        <div id="carouselExampleControls" class="carousel slide bg-secondary rounded" style="height: 385px;">
+            <div class="carousel-inner">
+                <div class="carousel-item" id="month-1"></div>
+                <div class="carousel-item active" id="month"></div>
+                <div class="carousel-item" id="month+1"></div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+{% if user.is_authenticated and request.user|has_any_group:"trainer,admin" %}
+  <!-- Модальное окно -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{% translate "Modal window header" %}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label={% translate "Close" %}></button>
+        </div>
+        <div class="modal-body">
+            <div id="training_window">
+            ...
+            </div>
+            <div class="d-none" id="change_form_training">
+                <form method="post" action="/schedule/update">
+                    {% csrf_token %}
+                    {{ upd_form.non_field_errors }}
+                    <input type="hidden" name="training_id" id="upd_training_id">
+                    <div class="fieldWrapper">
+                        {{ upd_form.training_type.errors }}
+                        <label for="{{ upd_form.training_type.id_for_label }}">{% translate "Training type:" %}</label>
+                        {{ upd_form.training_type }}
+                    </div>
+                    <div class="fieldWrapper">
+                        {% if upd_form.training_date.errors %}
+                            {{ upd_form.training_date.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.training_date.id_for_label }}">{% translate "Training date:" %}</label>
+                        {{ upd_form.training_date }}
+                    </div>
+                    <div class="overflow-visible">
+                        {% if upd_form.clients.errors %}
+                            {{ upd_form.clients.errors }}
+                        {% endif %}
+                        <label for="{{ upd_form.clients.id_for_label }}">{% translate "Clients:" %}</label>
+                        {{ upd_form.clients }}
+                    </div>
+                    <button type="submit" class="btn btn-success">{% translate "Update" %}</button>
+                    <button class="btn btn-danger" type="button" onclick="hideForm()">{% translate "Cancel" %}</button>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+    <script>
+
+        function checkTraning(date){
+            let check = "false";
+            $(".training").each(function(i, val){
+                if((new Date(val.dataset['date'])).toDateString() == date.toDateString()){
+                    check = "true";
+                }
+            });
+            return check;
+        }
+
+        function displayCalendar(year, month, id) {
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let calendarHtml = "<div class='row'><div class='col-1'></div><div class='col'><p class='w-100 p-1 text-center h3 fw-bold text-white'>"+new Date(year, month, 1).toLocaleString("default",{month: "long"})+"</p><table class='w-100'>";
+            calendarHtml += "<tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr>";
+
+            let day = 1;
+            for (let i = 0; i < 6; i++) {
+                calendarHtml += "<tr>";
+                for (let j = 1; j < 7; j++) {
+                    if ((i === 0 && j < new Date(year, month, 1).getDay()) || day > daysInMonth) {
+                        calendarHtml += "<td></td>";
+                    } else {
+                        let info = checkTraning(new Date(year, month, day))
+                        if (info == "true"){
+                            calendarHtml += "<td style='cursor:pointer;' class='bg-primary text-white' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick='openTrainingWindow(new Date("+year+", "+month+", "+day+"))'>" + day + "</td>";
+                        } else {
+                            calendarHtml += "<td>" + day + "</td>";
+                        }
+                        day++;
+                    }
+                }
+                let info = checkTraning(new Date(year, month, day))
+                if (info == "true"){
+                    calendarHtml += "<td style='cursor:pointer;' class='bg-primary text-white' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick='openTrainingWindow(new Date("+year+", "+month+", "+ day +"))'>" + day + "</td>";
+                } else {
+                    calendarHtml += "<td>" + day + "</td>";
+                }
+                day++;
+                if (day > daysInMonth) {
+                    break;
+                }
+            }
+
+            calendarHtml += "</table></div><div class='col-1'></div></div>";
+            document.getElementById(id).innerHTML = calendarHtml;
+        }
+        
+        
+
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth();
+        displayCalendar(year, month-1, "month-1");
+        displayCalendar(year, month, "month");
+        displayCalendar(year, month+1, "month+1");
+
+    </script>
+    {% if user.is_authenticated and request.user|has_any_group:"trainer,admin" %}
+    <script>
+        function deleteTraining(id) {
+            fetch('/schedule/' + id,  {
+              method: 'DELETE',
+              body: JSON.stringify({
+                "csrfmiddlewaretoken": '{{ csrf_token }}' }
+              )
+            })
+        }
+
+        function hideForm(){
+            $('#change_form_training').addClass('d-none')
+            $('#training_window').removeClass('d-none')
+            document.getElementById("change_form_training").reset();
+        }
+
+        function showForm(id){
+            $('#training_window').addClass('d-none')
+            $('#change_form_training').removeClass('d-none')
+            fill_form(id)
+        }
+        function openTrainingWindow(date){
+            let html = "";
+            $("#exampleModalLabel").empty().append(gettext("Trainings") + ", " + formatDate(date, "ddddddddd MMMMMMMMM", false))
+            $(".training").each(function(i, val){
+                let current_date = new Date(val.dataset['date'])
+                if(current_date.toDateString() == date.toDateString()){
+                    html += "<div class=\"form-wrapper\">" + 
+                        gettext("At") + " " + formatDate(current_date, "HH:mm", false) + ", " +
+                        gettext("type:") + " " + val.dataset['type_name'] + ", " +
+                        gettext("trainer:") + " " + val.dataset['train'] +
+                        `<form action=\"/schedule/delete\" method=\"post\">
+                        {% csrf_token %}
+                        <input type=\"hidden\" name=\"training_id\" value=\"` + val.dataset['id'] + "\">" +
+                        `<button type="submit" class="btn btn-danger">{% translate "Delete" %}</button>
+                        </form><button  class="btn btn-secondary" onclick="showForm(` +
+                        val.dataset['id'] + `)">{% translate "Update" %}</button></div><br>`;
+                }
+            });
+            $("#training_window").empty().append(html);
+        }
+        function fill_form(id) {
+            var trainingData = $(this).serialize();
+            
+            $.ajax({
+                type: 'GET',
+                url: '/schedule/' + id,
+                data: trainingData,
+                success: function(response) {
+                    let checkboxes = document.getElementById("upd_clients").getElementsByTagName('input')
+                    console.log(response);
+                    console.log(checkboxes);
+                    clients = response.clients;
+                    for (let item of checkboxes) {
+                        if (clients.includes(item.value)) {
+                            item.checked = true;
+                        }
+                    }
+                    document.getElementById("upd_training_id").value = id;
+                    document.getElementById("upd_training_type").value = response.training_type;
+                    document.getElementById("upd_training_date").valueAsDate  = new Date(response.training_date);
+                    console.log(document.getElementById("upd_training_date").valueAsDate, new Date(response.training_date));
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+    {% elif user.is_authenticated and request.user|has_group:"client" %}
+    <script>
+        function openTrainingWindow(date){
+            let html = "";
+            $("#exampleModalLabel").empty().append(gettext("Trainings") + " " +date.toDate())
+            $(".training").each(function(i, val){
+                let current_date = new Date(val.dataset['date'])
+                if(current_date.toDateString() == date.toDateString()){
+                    html += gettext("At") + " " + formatDate(current_date, "HH:mm", false) + " " +
+                    gettext("type:") + " " + val.dataset['type'] + " " +
+                    gettext("trainer:") + " " + val.dataset['train'] + "<br>";
+                }
+            });
+            $("#training_window").empty().append(html);
+        }
+    </script>
+    {% endif %}
+    {% load static %}
+    <script src="{% url 'javascript-catalog' %}"></script>
+    <script src="{% static 'js/basic.js' %}"></script>
+{% endblock %}

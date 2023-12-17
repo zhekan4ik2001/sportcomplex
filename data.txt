@@ -1,6 +1,0 @@
-superuser
-superuser@ex.com
-12345678
-
-trainer1
-2036FrPo
