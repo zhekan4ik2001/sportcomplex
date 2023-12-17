@@ -89,7 +89,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def full_name(self):
         full_name = '%s %s' % (self.user_last_name, self.user_first_name)
         if (self.user_patronymic) :
-            full_name += ' '+self.user_patronymic
+            full_name += ' ' + self.user_patronymic
         return full_name.strip()
 
     def get_short_name(self):
@@ -115,7 +115,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     @property
     def basic_info(self):
         temp_patr = '' if self.user_patronymic is None else self.user_patronymic
-        return "id=" + str(self.user_id) + ";\n" + \
+        return "(id=" + str(self.user_id) + ")\n" + \
             _("username=") + self.username + ";\n" + \
             _("Name=") + self.user_first_name + self.user_last_name + temp_patr + ";\n" + \
             self.user_phone + ";\n" + \
@@ -127,7 +127,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             self.user_first_name + " " + \
             self.user_last_name
         if (self.user_patronymic):
-            return_text += temp_patr
+            return_text += " " + temp_patr
         return_text += "."
         return return_text
 
@@ -182,8 +182,8 @@ class Abonement(models.Model):
         verbose_name_plural = _('abonements')
     def __str__(self):
         return "(id=" + str(self.abonement_id) + ") " + \
-        self.abonement_type.abonement_type + \
-        _("opened=") + self.opened.strftime('%Y-%m-%d') + \
+        self.abonement_type.abonement_type + " " + \
+        _("opened=") + self.opened.strftime('%Y-%m-%d') + ", " + \
         _("expires=") + self.expires.strftime('%Y-%m-%d') + "."
 
 

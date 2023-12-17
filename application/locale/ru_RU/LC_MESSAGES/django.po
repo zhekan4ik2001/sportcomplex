@@ -205,11 +205,11 @@ msgstr "Истекает"
 
 #: .\application\models.py:181
 msgid "abonement"
-msgstr "Управление"
+msgstr "абонемент"
 
 #: .\application\models.py:182
 msgid "abonements"
-msgstr "Управление"
+msgstr "абонементы"
 
 #: .\application\models.py:186
 msgid "opened="
