@@ -55,7 +55,7 @@ pip install -r requirements.txt
 
 <a name="header1_2"></a>
 ### База данных
-Для работы сервера понадобится база данных, создаваемая в PostgreSQL. Можно запустить psql в консоли или пользоваться графическим приложением pgAdmin.
+Для работы сервера понадобится база данных, создаваемая в PostgreSQL. Можно запустить `psql` в консоли или пользоваться графическим приложением pgAdmin. На linux команды исполоняются от пользователя `postgres`.
 ```
 CREATE DATABASE sportcomplex_database;
 ```
@@ -78,7 +78,7 @@ GRANT ALL PRIVILEGES ON DATABASE sportcomplex_database TO sportcomplex_admin;
 python manage.py makemigrations
 python manage.py migrate
 ```
-Если на первой команде появилась ошибка `permission denied`, то для PostgreSQL это сиправляется командой:
+Если на первой команде появилась ошибка `permission denied`, то для PostgreSQL это исправляется командой:
 `ALTER DATABASE sportcomplex_database OWNER TO sportcomplex_admin;`
 
 <a name="header1_3"></a>
