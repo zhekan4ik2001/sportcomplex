@@ -53,7 +53,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         max_length=256, blank=True,
         verbose_name=_('E-mail')
     )
-    phone_regex = RegexValidator(regex=r'^\+?\d{9,15}$', 
+    phone_regex = RegexValidator(regex=r'^\+\d{9,15}$', 
                                  message=_("Phone number must match the format: '+999999999'. Max 15 digits."))
     user_phone = models.CharField(
         validators=[phone_regex], max_length=16, blank=False,
@@ -251,4 +251,4 @@ class Training(models.Model):
         verbose_name = _('training')
         verbose_name_plural = _('trainings')
     def __str__(self):
-        return f"{self.training_id}: {self.training_type}, {self.training_date}, {self.training_leader_name()}."
+        return f"{self.training_id}: {self.training_type}, {self.training_date}, {self.training_leader_name}."

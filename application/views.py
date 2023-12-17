@@ -90,13 +90,14 @@ def schedule_page(request):
     elif (request.method == 'POST'):
         temp_data = TrainingSessionForm(request.POST)
         if temp_data.is_valid():
-            #print(temp_data.fields)
+            print(temp_data.fields)
             if (temp_data.data.get('clients')):
                 new_data = temp_data.save(commit=False)
                 new_data.training_leader_id = request.user.user_id
                 #print(new_data)
                 new_data.save()
                 temp_data.save_m2m()
+                print('saved')
                 return redirect('application:schedule')
             else:
                 redirect('application:schedule')

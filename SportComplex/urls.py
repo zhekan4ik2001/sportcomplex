@@ -27,13 +27,10 @@ router.register(r'^trainings', TrainingViewSet)
 urlpatterns = [
     re_path(r'^', include('application.urls')),
     re_path(r'^api/v1/', include(router.urls)),
-    #re_path(r'accounts/', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += i18n_patterns(
     re_path(r'^admin/', admin.site.urls),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
-    #re_path(r'accounts/', include('django.contrib.auth.urls')),
-    # If no prefix is given, use the default language
     prefix_default_language=False
 )
